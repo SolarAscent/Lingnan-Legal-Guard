@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue-legal-guard</title>
+    <!-- Tailwind CSS CDN for quick demo parity with root demo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              gold: '#D4AF37',
+              dark: '#121212',
+              darkgray: '#1E1E1E',
+              lightgray: '#2D2D2D',
+            },
+            fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+            aspectRatio: { '16/9': '16 / 9' },
+          },
+        },
+      }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+    <style>
+      @layer utilities {
+        .text-shadow-gold { text-shadow: 0 0 8px rgba(212,175,55,0.4); }
+        .bg-gradient-gold-dark { background: linear-gradient(135deg, #121212 0%, #1E1E1E 100%); }
+        .hover-scale { transition: transform 0.3s ease; }
+        .hover-scale:hover { transform: scale(1.03); }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

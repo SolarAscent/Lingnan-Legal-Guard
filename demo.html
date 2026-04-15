@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal-Guard - 跨境小微企业的数字法务部</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 Font Awesome 图标 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <!-- 自定义配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37', // 主金色
+                        dark: '#121212',  // 主黑色
+                        darkgray: '#1E1E1E', // 深灰背景
+                        lightgray: '#2D2D2D', // 浅灰卡片
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    aspectRatio: {
+                        '16/9': '16 / 9',
+                    }
+                },
+            }
+        }
+    </script>
+    <style>
+        @layer utilities {
+            .text-shadow-gold {
+                text-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+            }
+            .bg-gradient-gold-dark {
+                background: linear-gradient(135deg, #121212 0%, #1E1E1E 100%);
+            }
+            .hover-scale {
+                transition: transform 0.3s ease;
+            }
+            .hover-scale:hover {
+                transform: scale(1.03);
+            }
+        }
+    </style>
+</head>
+<body class="bg-dark text-white font-sans">
+<!-- 导航栏 -->
+<nav class="bg-darkgray/80 backdrop-blur-md fixed w-full z-50 border-b border-gold/20">
+    <div class="container mx-auto px-6 py-4 flex justify-between items-center max-w-7xl">
+        <!-- Logo -->
+        <div class="flex items-center gap-2">
+            <i class="fa-solid fa-shield-halved text-gold text-2xl"></i>
+            <span class="text-2xl font-bold text-gold">Legal-Guard</span>
+        </div>
+        <!-- 导航菜单（桌面端） -->
+        <div class="hidden md:flex items-center gap-8">
+            <a href="#" class="text-white hover:text-gold transition-colors">首页</a>
+            <a href="#" class="text-white/80 hover:text-gold transition-colors">核心功能</a>
+            <a href="#" class="text-white/80 hover:text-gold transition-colors">跨境案例</a>
+            <a href="#" class="text-white/80 hover:text-gold transition-colors">定价方案</a>
+            <a href="#" class="text-white/80 hover:text-gold transition-colors">帮助中心</a>
+        </div>
+        <!-- 登录/注册按钮 -->
+        <div class="flex items-center gap-4">
+            <a href="#" class="px-4 py-2 text-white/80 hover:text-gold transition-colors">登录</a>
+            <a href="#" class="px-6 py-2 bg-gold text-dark font-medium rounded-md hover:bg-gold/90 transition-colors shadow-lg shadow-gold/20">免费注册</a>
+        </div>
+        <!-- 移动端菜单按钮 -->
+        <button class="md:hidden text-white text-xl">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </div>
+</nav>
+
+<!-- 英雄区（Hero Section） -->
+<section class="pt-32 pb-20 bg-gradient-gold-dark">
+    <div class="container mx-auto px-6 flex flex-col md:flex-row items-center gap-10 max-w-7xl">
+        <div class="md:w-1/2 lg:w-6/12 space-y-6">
+            <h1 class="text-[clamp(2.2rem,4.5vw,4.5rem)] lg:text-[5rem] font-bold leading-tight text-gold text-shadow-gold">
+                小微企业的数字法务部
+            </h1>
+            <h2 class="mt-2 text-[clamp(1.0rem,2.5vw,1.75rem)] font-semibold text-white">
+                跨境合同AI生成+合规审查
+            </h2>
+            <p class="text-base lg:text-lg leading-relaxed text-white/70 max-w-lg">10分钟生成符合目标国法规的合同，法务成本直降90%，覆盖28个主要贸易国合规标准</p>
+            <div class="flex flex-wrap gap-4 pt-4">
+                <a href="trial.html" class="px-8 py-3 bg-gold text-dark font-semibold rounded-md hover:bg-gold/90 transition-colors shadow-lg shadow-gold/30 hover-scale">
+                    免费试用（生成1份合同）
+                </a>
+                <a href="#" class="px-8 py-3 border border-gold/50 text-gold rounded-md hover:bg-gold/10 transition-colors hover-scale">
+                    <i class="fa-solid fa-play-circle mr-1"></i> 查看演示视频
+                </a>
+            </div>
+            <div class="flex items-center gap-4 pt-2 text-white/60 text-sm">
+                <span><i class="fa-solid fa-check-circle text-gold mr-1"></i> 无需信用卡</span>
+                <span><i class="fa-solid fa-check-circle text-gold mr-1"></i> 区块链存证</span>
+                <span><i class="fa-solid fa-check-circle text-gold mr-1"></i> 数据加密</span>
+            </div>
+        </div>
+        <!-- 英雄区插图 -->
+        <div class="md:w-1/2 lg:w-6/12 aspect-[16/9] lg:aspect-[4/3] rounded-xl overflow-hidden shadow-2xl shadow-gold/10">
+            <img src="https://p0.ssl.qhimgs1.com/t04b97659f1c3035604.jpg" alt="跨境合同智能生成演示" class="w-full h-full object-cover">
+        </div>
+    </div>
+</section>
+
+<!-- 核心功能区 -->
+<section class="py-20 bg-dark">
+    <div class="container mx-auto px-6 max-w-7xl">
+        <div class="text-center mb-16">
+            <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold">核心功能 · 解决跨境法务痛点</h2>
+            <p class="text-xl text-white/60 mt-4">专为跨境小微企业打造，简化法律合规全流程</p>
+        </div>
+        <!-- 功能卡片 -->
+        <div class="grid md:grid-cols-3 gap-8">
+            <!-- 智能合同生成 -->
+            <div class="bg-lightgray rounded-xl p-8 border border-gold/10 hover-scale shadow-lg shadow-dark/50">
+                <div class="w-25 h-25 bg-gold/10 rounded-lg flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-file-contract text-gold text-2xl"></i>
+                    <img src="https://pic.52112.com/2020/01/06/JPG-200106_13/xeBpEnZdQA_small.jpg" alt="智能合同生成示意" class="w-full h-full object-cover">
+                </div>
+                <h3 class="text-gold text-xl font-semibold mb-2">智能合同生成</h3>
+                <p class="text-white/70">输入业务需求，AI自动匹配目标法域模板，10分钟生成标准化跨境合同，支持自定义条款补充。</p>
+            </div>
+            <!-- 合规审查 -->
+            <div class="bg-lightgray rounded-xl p-8 border border-gold/10 hover-scale shadow-lg shadow-dark/50">
+                <div class="w-25 h-25 bg-gold/10 rounded-lg flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-shield-virus text-gold text-2xl"></i>
+                    <img src="https://p0.ssl.qhimgs1.com/sdr/400__/t03191cd514ba3946d6.jpg" alt="合规审查示意" class="w-full h-full object-cover">
+                </div>
+                <h3 class="text-gold text-xl font-semibold mb-2">AI合规审查</h3>
+                <p class="text-white/70">区块链存证+风险智能标注，高风险条款红色预警，自动提供合规修改建议，降低跨境法律风险。</p>
+            </div>
+            <!-- 专家咨询 -->
+            <div class="bg-lightgray rounded-xl p-8 border border-gold/10 hover-scale shadow-lg shadow-dark/50">
+                <div class="w-25 h-25 bg-gold/10 rounded-lg flex items-center justify-center mb-6">
+                    <i class="fa-solid fa-user-tie text-gold text-2xl"></i>
+                    <img src="https://p0.ssl.qhimgs1.com/sdr/400__/t01b434b3c4c3f288e0.jpg" alt="专家咨询示意" class="w-full h-full object-cover">
+                </div>
+                <h3 class="text-gold text-xl font-semibold mb-2">专家咨询通道</h3>
+                <p class="text-white/70">疑难条款匹配专属跨境法律专家，1v1定制化解决方案，响应时间≤4小时，覆盖28个贸易国法域。</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 信任背书区 -->
+<section class="py-20 bg-darkgray">
+    <div class="container mx-auto px-6 max-w-7xl">
+        <div class="text-center mb-12">
+            <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold">值得跨境企业信赖</h2>
+            <p class="text-xl text-white/60 mt-4">已服务6000+跨境小微企业，覆盖全球主要贸易区域</p>
+        </div>
+        <!-- 数据统计 + 多语言适配 -->
+        <div class="grid md:grid-cols-2 gap-10 mb-16">
+            <div class="bg-dark rounded-xl p-8 border border-gold/10">
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="text-center">
+                        <p class="text-5xl font-bold text-gold">6300+</p>
+                        <p class="text-white/70 mt-2">服务跨境小微企业</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-5xl font-bold text-gold">28</p>
+                        <p class="text-white/70 mt-2">覆盖贸易国法域</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-dark rounded-xl p-8 border border-gold/10">
+                <h3 class="text-xl font-semibold mb-4 text-center">多语言合规适配</h3>
+                <div class="flex flex-wrap justify-center gap-4 text-lg">
+                    <span class="px-4 py-2 bg-lightgray rounded-md">简体中文</span>
+                    <span class="px-4 py-2 bg-lightgray rounded-md">English</span>
+                    <span class="px-4 py-2 bg-lightgray rounded-md">Español</span>
+                    <span class="px-4 py-2 bg-lightgray rounded-md">Français</span>
+                    <span class="px-4 py-2 bg-lightgray rounded-md">Deutsch</span>
+                    <span class="px-4 py-2 bg-lightgray rounded-md">日本語</span>
+                    <span class="px-4 py-2 bg-gold/20 text-gold rounded-md">+6种语言</span>
+                </div>
+            </div>
+        </div>
+        <!-- 客户Logo占位 -->
+        <div class="flex flex-wrap justify-center items-center gap-12 opacity-70">
+            <div class="text-2xl font-semibold text-white/50">客户案例</div>
+            <img src="https://picsum.photos/id/29/120/60" alt="客户Logo" class="h-10 grayscale">
+            <img src="https://picsum.photos/id/30/120/60" alt="客户Logo" class="h-10 grayscale">
+            <img src="https://picsum.photos/id/31/120/60" alt="客户Logo" class="h-10 grayscale">
+            <img src="https://picsum.photos/id/32/120/60" alt="客户Logo" class="h-10 grayscale">
+            <img src="https://picsum.photos/id/33/120/60" alt="客户Logo" class="h-10 grayscale">
+        </div>
+    </div>
+</section>
+
+<!-- 底部CTA -->
+<section class="py-20 bg-gradient-gold-dark">
+    <div class="container mx-auto px-6 text-center max-w-7xl">
+        <h2 class="text-[clamp(1.8rem,3vw,2.5rem)] font-bold mb-6">开启跨境法务数字化转型</h2>
+        <p class="text-xl text-white/70 mb-8 max-w-2xl mx-auto">立即注册，免费生成1份跨境合同，体验AI合规审查服务，无需信用卡，无隐藏费用</p>
+        <a href="trial.html" class="px-10 py-4 bg-gold text-dark font-semibold rounded-md hover:bg-gold/90 transition-colors shadow-lg shadow-gold/30 text-lg hover-scale">
+            免费试用 Legal-Guard
+        </a>
+    </div>
+</section>
+
+<!-- 页脚 -->
+<footer class="bg-darkgray py-12 border-t border-gold/10">
+    <div class="container mx-auto px-6 max-w-7xl">
+        <div class="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-shield-halved text-gold text-xl"></i>
+                    <span class="text-xl font-bold text-gold">Legal-Guard</span>
+                </div>
+                <p class="text-white/60 mb-4">跨境小微企业的数字法务部，让合规更简单</p>
+                <div class="flex gap-4 text-white/60">
+                    <a href="#" class="hover:text-gold transition-colors"><i class="fa-brands fa-weixin text-xl"></i></a>
+                    <a href="#" class="hover:text-gold transition-colors"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                    <a href="#" class="hover:text-gold transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4">产品</h4>
+                <ul class="space-y-2 text-white/60">
+                    <li><a href="#" class="hover:text-gold transition-colors">智能合同生成</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">合规审查</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">专家咨询</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">区块链存证</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4">资源</h4>
+                <ul class="space-y-2 text-white/60">
+                    <li><a href="#" class="hover:text-gold transition-colors">跨境合规指南</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">案例库</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">帮助中心</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">API文档</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4">关于我们</h4>
+                <ul class="space-y-2 text白/60">
+                    <li><a href="#" class="hover:text-gold transition-colors">公司介绍</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">联系我们</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">隐私政策</a></li>
+                    <li><a href="#" class="hover:text-gold transition-colors">服务条款</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center text白/40 text-sm pt-8 border-t border-white/10">
+            © 2025 Legal-Guard. 保留所有权利。
+        </div>
+    </div>
+</footer>
+
+<!-- 回到顶部按钮（放大显示小人，保持透明背景） -->
+<button id="back-to-top" aria-label="回到顶部" class="fixed bottom-8 right-8 w-24 h-24 bg-transparent p-2 flex items-center justify-center shadow-2xl shadow-gold/30 hover:-translate-y-1 hover:scale-105 transition-transform duration-200 z-50">
+    <img id="back-robot-img" src="./assets/lg-robot.svg" alt="Legal-Guard 小人" class="w-[92%] h-[92%] object-contain">
+    <i id="back-arrow" class="fa-solid fa-arrow-up text-gold hidden" aria-hidden="true" style="font-size:1.25rem"></i>
+ </button>
+
+<script>
+// 回到顶部按钮：DOMContentLoaded 后绑定，防止元素未渲染时脚本报错
+window.addEventListener('DOMContentLoaded', function(){
+  const btn = document.getElementById('back-to-top');
+  const robotImg = document.getElementById('back-robot-img');
+  const arrow = document.getElementById('back-arrow');
+  if(!btn) return;
+
+  function showArrow() {
+    if (robotImg) robotImg.style.display = 'none';
+    if (arrow) arrow.classList.remove('hidden');
+  }
+
+  if (robotImg) {
+    robotImg.addEventListener('error', showArrow);
+    robotImg.addEventListener('load', function(){ if(arrow) arrow.classList.add('hidden'); });
+  }
+
+  btn.style.opacity = '0';
+  btn.style.pointerEvents = 'none';
+  const showOnPx = 300;
+  const scrollContainer = () => document.documentElement || document.body;
+
+  function checkScroll() {
+    const scrolled = scrollContainer().scrollTop;
+    if (scrolled > showOnPx) {
+      btn.style.opacity = '1';
+      btn.style.pointerEvents = 'auto';
+    } else {
+      btn.style.opacity = '0';
+      btn.style.pointerEvents = 'none';
+    }
+  }
+
+  btn.addEventListener('click', function(){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('scroll', checkScroll, { passive: true });
+  checkScroll();
+});
+</script>
+</body>
+</html>

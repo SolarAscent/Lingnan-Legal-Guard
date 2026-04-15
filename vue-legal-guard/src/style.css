@@ -1,0 +1,359 @@
+/*:root {*/
+/*  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;*/
+/*  line-height: 1.5;*/
+/*  font-weight: 400;*/
+
+/*  color-scheme: light dark;*/
+/*  color: rgba(255, 255, 255, 0.87);*/
+/*  background-color: #242424;*/
+
+/*  font-synthesis: none;*/
+/*  text-rendering: optimizeLegibility;*/
+/*  -webkit-font-smoothing: antialiased;*/
+/*  -moz-osx-font-smoothing: grayscale;*/
+/*}*/
+
+/*a {*/
+/*  font-weight: 500;*/
+/*  color: #bcbcc5;*/
+/*  text-decoration: inherit;*/
+/*}*/
+/*a:hover {*/
+/*  color: #535bf2;*/
+/*}*/
+
+/*body {*/
+/*  margin: 0;*/
+/*  min-width: 320px;*/
+/*  min-height: 100vh;*/
+/*  background-color: #121212; !* match demo dark bg *!*/
+/*}*/
+
+/*h1 {*/
+/*  font-size: 3.2em;*/
+/*  line-height: 1.1;*/
+/*}*/
+
+/*button {*/
+/*  !*border-radius: 8px;*!*/
+/*  border: 1px solid transparent;*/
+/*  padding: 0.6em 1.2em;*/
+/*  font-size: 1em;*/
+/*  font-weight: 500;*/
+/*  font-family: inherit;*/
+/*  background-color: #1a1a1a;*/
+/*    font-bold: bold;*/
+/*  cursor: pointer;*/
+/*    !* 增加圆角使按钮更柔和 *!*/
+/*    border-radius: 6px;*/
+/*    !* 调整内边距让点击区域更大 *!*/
+/*    padding: 0.5em 1.2em;*/
+/*    !* 增强悬停效果 *!*/
+/*    transition: all 0.2s ease;*/
+/*    display: inline-flex;*/
+/*    align-items: center;*/
+/*    gap: 0.5em; !* 为图标和文字预留间距 *!*/
+/*will-change: transform;*/
+/*}*/
+/*button:hover {*/
+/*  border-color: #ffffff;*/
+/*}*/
+/*!* 鼠标或触控按下时 *!*/
+/*button:active {*/
+/*    transform: translateY(2px) scale(0.98);*/
+/*    box-shadow: 0 6px 18px rgba(212, 175, 55, 0.18);*/
+/*}*/
+/*button:focus,*/
+/*button:focus-visible {*/
+/*  outline: 4px auto -webkit-focus-ring-color;*/
+/*}*/
+
+/*!* 主按钮样式强化 *!*/
+/*.btn-primary {*/
+/*    background-color: #D4AF37;*/
+/*    color: #121212;*/
+/*    font-weight: 600;*/
+/*    border: none;*/
+/*    box-shadow: 0 2px 5px rgba(212, 175, 55, 0.2);*/
+/*}*/
+/*.btn-primary:hover {*/
+/*    background-color: #e5c158;*/
+/*    box-shadow: 0 4px 8px rgba(212, 175, 55, 0.3);*/
+/*    transform: translateY(-1px);*/
+/*}*/
+/*.btn-primary:active {*/
+/*    transform: translateY(1px);*/
+/*    box-shadow: 0 1px 3px rgba(212, 175, 55, 0.2);*/
+/*}*/
+
+/*!* 次要按钮样式 *!*/
+/*.btn-secondary {*/
+/*    background-color: rgba(255, 255, 255, 0.1);*/
+/*    color: rgba(255, 255, 255, 0.8);*/
+/*    border: 1px solid rgba(255, 255, 255, 0.15);*/
+/*}*/
+/*.btn-secondary:hover {*/
+/*    background-color: rgba(255, 255, 255, 0.15);*/
+/*    border-color: rgba(255, 255, 255, 0.25);*/
+/*}*/
+
+/*!* 禁用状态 *!*/
+/*button:disabled {*/
+/*    opacity: 0.6;*/
+/*    cursor: not-allowed;*/
+/*    transform: none !important;*/
+/*    box-shadow: none !important;*/
+/*}*/
+
+/*.card {*/
+/*  padding: 2em;*/
+/*}*/
+
+/*#app {*/
+/*  width: 100%;*/
+/*  margin: 0;*/
+/*  padding: 0;*/
+/*}*/
+
+/*!* 在 style.css 中添加 *!*/
+/*!* 步骤切换动画 *!*/
+/*section {*/
+/*    transition: all 0.3s ease-in-out;*/
+/*}*/
+/*section[v-show] {*/
+/*    animation: fadeIn 0.4s ease-out;*/
+/*}*/
+/*@keyframes fadeIn {*/
+/*    from { opacity: 0; transform: translateY(10px); }*/
+/*    to { opacity: 1; transform: translateY(0); }*/
+/*}*/
+
+/*!* 条款面板展开/折叠动画 *!*/
+/*div[v-show="panels.base"],*/
+/*div[v-show="panels.data"],*/
+/*div[v-show="panels.scope"] {*/
+/*    max-height: 0;*/
+/*    overflow: hidden;*/
+/*    transition: max-height 0.3s ease;*/
+/*}*/
+/*div[v-show="panels.base"],*/
+/*div[v-show="panels.data"],*/
+/*div[v-show="panels.scope"] {*/
+/*    max-height: 500px; !* 足够容纳内容的高度 *!*/
+/*}*/
+
+/*!* 卡片悬停效果 *!*/
+/*.bg-lightgray.rounded-xl {*/
+/*    transition: transform 0.2s ease, box-shadow 0.2s ease;*/
+/*}*/
+/*.bg-lightgray.rounded-xl:hover {*/
+/*    transform: translateY(-3px);*/
+/*    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);*/
+/*}*/
+
+/*@media (prefers-color-scheme: light) {*/
+/*  :root {*/
+/*    color: #213547;*/
+/*    background-color: #ffffff;*/
+/*  }*/
+/*  a:hover {*/
+/*    color: #ffffff;*/
+/*  }*/
+/*  button {*/
+/*    background-color: #ffffff;*/
+/*  }*/
+/*}*/
+:root {
+    font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    font-weight: 400;
+
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.95);
+    background-color: #0a0a0a;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* 新增渐变和阴影变量 */
+    --gradient-gold: linear-gradient(135deg, #D4AF37 0%, #F7EF8A 100%);
+    --gradient-dark: linear-gradient(135deg, #121212 0%, #1a1a1a 100%);
+    --shadow-gold: 0 10px 30px rgba(212, 175, 55, 0.2);
+    --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.3);
+    --shadow-button: 0 4px 15px rgba(212, 175, 55, 0.25);
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    background: var(--gradient-dark);
+    background-attachment: fixed;
+}
+
+/* 按钮美化 */
+button {
+    border-radius: 12px;
+    border: none;
+    padding: 0.8em 1.8em;
+    font-size: 1em;
+    font-weight: 600;
+    font-family: inherit;
+    background: var(--gradient-gold);
+    color: #121212;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    box-shadow: var(--shadow-button);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.7s ease;
+}
+
+button:hover::before {
+    left: 100%;
+}
+
+button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 25px rgba(212, 175, 55, 0.35);
+}
+
+button:active {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 15px rgba(212, 175, 55, 0.25);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 全局按钮按压动效与可访问性样式 */
+button {
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  will-change: transform;
+}
+button:active {
+  transform: translateY(2px) scale(0.98);
+}
+button:focus-visible {
+  outline: 2px solid rgba(212, 175, 55, 0.6);
+  outline-offset: 2px;
+}
+
+/* 次要按钮样式 */
+button.secondary {
+    background: transparent;
+    border: 2px solid #D4AF37;
+    color: #D4AF37;
+    box-shadow: none;
+}
+
+button.secondary:hover {
+    background: rgba(212, 175, 55, 0.1);
+}
+
+/* 输入框美化 */
+input, select, textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 0.8em 1em;
+    color: white;
+    transition: all 0.3s ease;
+    font-size: 0.95em;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* 卡片美化 */
+.card {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(212, 175, 55, 0.1);
+    padding: 2em;
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-dark);
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #D4AF37 0%, #F7EF8A 100%);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #F7EF8A 0%, #D4AF37 100%);
+}
+
+/* 动画效果 */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.6); }
+}
+
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+.pulse-animation {
+    animation: pulse-gold 2s ease-in-out infinite;
+}
+
+/* 进度条美化 */
+.progress-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #D4AF37 0%, #F7EF8A 100%);
+    border-radius: 3px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}

@@ -1,0 +1,221 @@
+/* Trial 页（试用流程）专用样式 */
+
+/* 折叠面板容器与标题按钮 */
+.panel {
+  background-color: #121212; /* dark */
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 0.5rem;
+}
+.panel:hover { border-color: rgba(255, 255, 255, 0.20); }
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: #fff; /* 白底 */
+  color: #D4AF37; /* 黄字 */
+}
+.panel-title .title-left { display: inline-flex; align-items: center; gap: 0.5rem; }
+.panel-title .arrow { font-weight: 700; color: #222; }
+
+/* 步骤标题图标对齐 */
+.step-title { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+/* 智能提示卡片 */
+.hint-card {
+  background-color: #121212;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+}
+.hint-card .meta { display: flex; align-items: center; justify-content: space-between; }
+
+/* 预览区（仿阅读器） */
+.preview-paper {
+  background: #fff;
+  color: #111;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 10px 26px rgba(0,0,0,0.25);
+}
+
+/* 统一复选框尺寸 */
+.checkbox { width: 1rem; height: 1rem; }
+
+/* 自定义颜色 */
+.bg-dark { background-color: #121212; }
+.bg-darkgray { background-color: #1E1E1E; }
+.bg-gold { background-color: #D4AF37; }
+.bg-lightgray { background-color: #2A2A2A; }
+.text-gold { color: #D4AF37; }
+
+/* 过渡动画 */
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.fade-slide-enter-from {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* 展开动画 */
+.expand-enter-active,
+.expand-leave-active {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.expand-enter-from,
+.expand-leave-to {
+    max-height: 0;
+    opacity: 0;
+}
+
+.expand-enter-to,
+.expand-leave-from {
+    max-height: 500px;
+    opacity: 1;
+}
+
+/* 淡入淡出动画 */
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* 自定义滚动条 */
+.scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #D4AF37 0%, #F7EF8A 100%);
+    border-radius: 3px;
+}
+
+/* 动画效果 */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.float-animation {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-gold {
+    0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+    50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.6); }
+}
+
+.pulse-animation {
+    animation: pulse-gold 2s ease-in-out infinite;
+}
+
+/* 全屏样式 */
+#contract-preview:fullscreen {
+    background: white;
+    padding: 2rem;
+    width: 100%;
+    height: 100%;
+}
+
+/* 打印样式 */
+@media print {
+    #contract-preview {
+        transform: none !important;
+    }
+
+    nav, aside, .fixed {
+        display: none !important;
+    }
+
+    .bg-white {
+        background: white !important;
+        color: black !important;
+    }
+}
+
+/* 面板内容统一滚动区域 */
+.panel-content {
+  max-height: 220px;
+  overflow-y: auto;
+  padding-left: 1rem; /* 与模板保持内边距一致 */
+  padding-right: 1rem;
+}
+
+/* 可选：面板内容滚动条美化（继承全局滚动条也可） */
+.panel-content::-webkit-scrollbar {
+  width: 8px;
+}
+.panel-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #D4AF37 0%, #F7EF8A 100%);
+  border-radius: 4px;
+}
+
+/* 选择框黑色文字（用于深色背景） */
+/*.select-black {*/
+/*  color: #000;           !* select 显示的当前值为黑色 *!*/
+/*  background-color: #fff;!* 白底更易读 *!*/
+/*}*/
+.select-black option {
+  color: #000;           /* 下拉选项文字为黑色 */
+  background-color: #fff;
+}
+.bg-dark { --tw-bg-opacity: 1; background-color: #121212; }
+.bg-darkgray { background-color: #1E1E1E; }
+.bg-gold { background-color: #D4AF37; }
+.text-gold { color: #D4AF37; }
+.text-white { color: #fff; }
+.panel {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: border-color 0.3s;
+}
+.panel-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.panel-title:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.title-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.arrow {
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+.panel-content {
+    padding: 0 1rem 1rem;
+    color: rgb(229 231 235);
+}
+.checkbox {
+    accent-color: #D4AF37;
+}

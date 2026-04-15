@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深圳市低空物流运营数据</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f7fa;
+            color: #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 40px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        .data-source {
+            text-align: right;
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>深圳市低空物流运营年度数据</h1>
+
+    <div class="chart-container">
+        <canvas id="lowAltitudeChart"></canvas>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">26.4%</div>
+            <div class="stat-label">2024年低空经济增加值增长率</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">30.4%</div>
+            <div class="stat-label">2025年前三季度低空经济增加值增长率</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">59%</div>
+            <div class="stat-label">2025年上半年无人机产量同比增长</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">42.8%</div>
+            <div class="stat-label">2025年前三季度无人机物流配送同比增长</div>
+        </div>
+    </div>
+
+    <div class="data-source">
+        数据来源：深圳市低空经济产业统计报告
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('lowAltitudeChart').getContext('2d');
+
+        // 数据定义
+        const data = {
+            labels: ['2024年', '2025年前三季度'],
+            datasets: [
+                {
+                    label: '低空经济与空天产业增加值 (亿元)',
+                    data: [213.77, 253.91],
+                    backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 2,
+                    yAxisID: 'y'
+                },
+                {
+                    label: '无人机物流配送架次 (万架次)',
+                    data: [77.6, 63],
+                    backgroundColor: 'rgba(46, 204, 113, 0.7)',
+                    borderColor: 'rgba(46, 204, 113, 1)',
+                    borderWidth: 2,
+                    yAxisID: 'y1'
+                }
+            ]
+        };
+
+        // 配置选项
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '深圳市低空经济核心指标对比',
+                        font: {
+                            size: 18
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.dataset.label.includes('增加值')) {
+                                    label += context.parsed.y + ' 亿元';
+                                } else {
+                                    label += context.parsed.y + ' 万架次';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: '低空经济与空天产业增加值 (亿元)'
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.1)'
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: '无人机物流配送架次 (万架次)'
+                        },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    }
+                }
+            }
+        };
+
+        // 创建图表
+        const lowAltitudeChart = new Chart(ctx, config);
+    });
+</script>
+</body>
+</html>
