@@ -93,6 +93,7 @@
             <div>
               <strong>合同已生成</strong>
               <p>编号：{{ contract.id }}</p>
+              <p>{{ normalizeLabel }}</p>
             </div>
           </div>
 
@@ -146,7 +147,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
 
 const initialForm = {
   partyA: '',
@@ -220,6 +221,11 @@ function resetForm() {
   apiError.value = ''
   contract.value = null
 }
+
+const normalizeLabel = computed(() => {
+  if (!contract.value) return ''
+  return contract.value.normalizedBy === 'deepseek' ? '字段已由 DeepSeek 优化' : '字段已按本地规则处理'
+})
 
 </script>
 

@@ -9,6 +9,7 @@ import { promisify } from "node:util";
 import { nanoid } from "nanoid";
 import { z } from "zod";
 import { createContractDocx } from "./contractDocument.js";
+import { isDeepSeekConfigured, sanitizeContractFieldsWithDeepSeek } from "./deepseekSanitizer.js";
 
 const execFileAsync = promisify(execFile);
 const __filename = fileURLToPath(import.meta.url);
@@ -127,6 +128,7 @@ app.get("/api/health", async (_req, res) => {
     ok: true,
     libreOffice: Boolean(soffice),
     sofficePath: soffice,
+    deepSeekConfigured: isDeepSeekConfigured(),
   });
 });
 
@@ -146,8 +148,9 @@ app.post("/api/contracts", async (req, res, next) => {
   const paths = contractPaths(contractId);
 
   try {
+    const sanitized = await sanitizeContractFieldsWithDeepSeek(result.data);
     await mkdir(paths.dir, { recursive: true });
-    await createContractDocx(result.data, paths.docx);
+    await createContractDocx(sanitized.fields, paths.docx);
     await convertDocxToPdf(paths.docx, paths.dir);
 
     return res.status(201).json({
@@ -155,6 +158,8 @@ app.post("/api/contracts", async (req, res, next) => {
       previewUrl: `/api/contracts/${contractId}/preview.pdf`,
       docxUrl: `/api/contracts/${contractId}/download.docx`,
       pdfUrl: `/api/contracts/${contractId}/download.pdf`,
+      normalizedFields: sanitized.fields,
+      normalizedBy: sanitized.source,
     });
   } catch (error) {
     return next(error);
@@ -186,6 +191,7 @@ app.use((error, _req, res, _next) => {
   res.status(statusCode).json({
     error: error.message || "服务器生成合同失败",
     code: error.code || "CONTRACT_GENERATION_FAILED",
+    fields: error.fields,
   });
 });
 
