@@ -1,0 +1,11 @@
+.git
+.idea
+.vscode
+node_modules
+server/node_modules
+vue-legal-guard/node_modules
+vue-legal-guard/dist
+server/storage/generated/*
+!server/storage/generated/.gitkeep
+.DS_Store
+npm-debug.log*

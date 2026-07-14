@@ -16,6 +16,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const SERVER_ROOT = resolve(__dirname, "..");
 const STORAGE_ROOT = resolve(SERVER_ROOT, "storage", "generated");
+const PUBLIC_DIR = resolve(SERVER_ROOT, "public");
+const PUBLIC_INDEX = join(PUBLIC_DIR, "index.html");
 const PORT = Number(process.env.PORT || 3001);
 
 const app = express();
@@ -185,6 +187,16 @@ app.get("/api/contracts/:id/download.docx", async (req, res) => {
   if (!(await assertReadable(paths.docx))) return sendMissing(res, "DOCX");
   return res.download(paths.docx, `nongfu-contract-${req.params.id}.docx`);
 });
+
+if (existsSync(PUBLIC_INDEX)) {
+  app.use(express.static(PUBLIC_DIR));
+  app.use((req, res, next) => {
+    if ((req.method === "GET" || req.method === "HEAD") && !req.path.startsWith("/api/")) {
+      return res.sendFile(PUBLIC_INDEX);
+    }
+    return next();
+  });
+}
 
 app.use((error, _req, res, _next) => {
   const statusCode = error.statusCode || 500;

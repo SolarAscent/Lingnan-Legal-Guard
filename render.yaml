@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: legal-guard-contract
+    env: docker
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DEEPSEEK_API_KEY
+        sync: false
