@@ -14,7 +14,7 @@ import {
   isDeepSeekConfigured,
   sanitizeContractFieldsWithDeepSeek,
 } from "./deepseekSanitizer.js";
-import { isAliyunSpeechConfigured, transcribeCantoneseAudio } from "./speechService.js";
+import { isAliyunSpeechConfigured, transcribeSpeechAudio } from "./speechService.js";
 
 const execFileAsync = promisify(execFile);
 const __filename = fileURLToPath(import.meta.url);
@@ -42,6 +42,7 @@ const speechSchema = z.object({
   audioBase64: z.string().min(1, "请上传音频"),
   mimeType: z.string().max(100).optional(),
   sampleRate: z.number().int().positive().optional(),
+  language: z.enum(["cantonese", "mandarin"]).optional(),
 });
 
 let sofficePathCache;
@@ -159,7 +160,7 @@ app.post("/api/speech/cantonese", async (req, res, next) => {
   }
 
   try {
-    const transcription = await transcribeCantoneseAudio(result.data);
+    const transcription = await transcribeSpeechAudio(result.data);
     const extraction = await extractContractFieldsFromTranscript(transcription.text);
 
     if (!extraction.approved) {

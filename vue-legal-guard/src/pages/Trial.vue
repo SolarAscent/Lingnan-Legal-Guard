@@ -61,13 +61,31 @@
             <span class="template-pill">买卖合同</span>
           </div>
 
-          <section class="voice-panel" aria-label="粤语语音输入">
+          <section class="voice-panel" aria-label="语音输入">
             <div class="voice-header">
               <span class="voice-icon"><i class="fa-solid fa-microphone-lines"></i></span>
               <div>
-                <h3>粤语语音填表</h3>
-                <p>先把粤语音频转成文字，再尝试填入表单字段。</p>
+                <h3>语音填表（粤语 / 普通话）</h3>
+                <p>先选语言，把语音转成文字后自动填入表单字段。</p>
               </div>
+            </div>
+            <div class="voice-lang" role="group" aria-label="识别语言">
+              <button
+                type="button"
+                :class="['lang-chip', { active: voiceLang === 'cantonese' }]"
+                :disabled="voiceLoading || isRecording"
+                @click="voiceLang = 'cantonese'"
+              >
+                粤语
+              </button>
+              <button
+                type="button"
+                :class="['lang-chip', { active: voiceLang === 'mandarin' }]"
+                :disabled="voiceLoading || isRecording"
+                @click="voiceLang = 'mandarin'"
+              >
+                普通话
+              </button>
             </div>
             <div class="voice-actions">
               <button type="button" class="secondary-action" :disabled="voiceLoading" @click="toggleRecording">
@@ -284,6 +302,7 @@ const voiceError = ref('')
 const voiceLoading = ref(false)
 const isRecording = ref(false)
 const missingFields = ref([])
+const voiceLang = ref('cantonese')
 
 let mediaRecorder = null
 let mediaStream = null
@@ -413,6 +432,7 @@ async function submitAudio(blob) {
       body: JSON.stringify({
         audioBase64,
         mimeType: blob.type || 'audio/wav',
+        language: voiceLang.value,
       }),
     })
     const payload = await response.json().catch(() => ({}))
@@ -703,6 +723,42 @@ onBeforeUnmount(() => {
   border-radius: 8px;
   background: #fde68a;
   color: #14342b;
+}
+
+.voice-lang {
+  display: inline-flex;
+  gap: 6px;
+  margin-bottom: 14px;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(2, 6, 23, 0.4);
+  border: 1px solid rgba(250, 204, 21, 0.18);
+}
+
+.lang-chip {
+  border: none;
+  background: transparent;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 6px 16px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.lang-chip:hover:not(:disabled) {
+  color: #f8fafc;
+}
+
+.lang-chip.active {
+  background: #fde68a;
+  color: #14342b;
+}
+
+.lang-chip:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .voice-actions,

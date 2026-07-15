@@ -1,5 +1,17 @@
+import { getNlsToken, isTokenSourceConfigured } from "./aliyunToken.js";
+
 const DEFAULT_ALIYUN_ASR_ENDPOINT = "https://nls-gateway-cn-shanghai.aliyuncs.com/stream/v1/asr";
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
+
+export const SUPPORTED_LANGUAGES = ["cantonese", "mandarin"];
+
+// 按语言选择对应项目的 Appkey；兼容旧的单一 NLS_APP_KEY。
+function resolveAppKey(language) {
+  if (language === "mandarin") {
+    return process.env.NLS_APP_KEY_MANDARIN || process.env.NLS_APP_KEY || "";
+  }
+  return process.env.NLS_APP_KEY_CANTONESE || process.env.NLS_APP_KEY || "";
+}
 
 function makeHttpError(message, statusCode, code) {
   const error = new Error(message);
@@ -36,23 +48,35 @@ function inferFormat(mimeType = "") {
   return process.env.ALIYUN_NLS_AUDIO_FORMAT || "wav";
 }
 
+// 至少配置了一个 Appkey，且有可用的 Token 来源（静态 Token 或 AccessKey）。
 export function isAliyunSpeechConfigured() {
-  return Boolean(process.env.ALIYUN_NLS_TOKEN && process.env.NLS_APP_KEY);
+  const hasAnyAppKey = Boolean(
+    process.env.NLS_APP_KEY_CANTONESE ||
+      process.env.NLS_APP_KEY_MANDARIN ||
+      process.env.NLS_APP_KEY,
+  );
+  return hasAnyAppKey && isTokenSourceConfigured();
 }
 
-export async function transcribeCantoneseAudio({ audioBase64, mimeType, sampleRate }) {
-  if (!isAliyunSpeechConfigured()) {
+export async function transcribeSpeechAudio({ audioBase64, mimeType, sampleRate, language = "cantonese" }) {
+  const lang = SUPPORTED_LANGUAGES.includes(language) ? language : "cantonese";
+  const label = lang === "mandarin" ? "普通话" : "粤语";
+
+  const appKey = resolveAppKey(lang);
+  if (!appKey || !isTokenSourceConfigured()) {
     throw makeHttpError(
-      "请先配置 ALIYUN_NLS_TOKEN 和 NLS_APP_KEY，且该 Appkey 需在阿里云控制台绑定粤语识别模型",
+      `请先配置${label} Appkey（NLS_APP_KEY_${lang === "mandarin" ? "MANDARIN" : "CANTONESE"}）以及 Token 来源` +
+        "（ALIYUN_NLS_TOKEN 或 ALIYUN_AK_ID + ALIYUN_AK_SECRET），且该 Appkey 需在阿里云控制台绑定对应语言的识别模型",
       503,
       "ALIYUN_SPEECH_NOT_CONFIGURED",
     );
   }
 
+  const token = await getNlsToken();
   const audioBuffer = normalizeAudioPayload(audioBase64);
   const endpoint = process.env.ALIYUN_NLS_ASR_ENDPOINT || DEFAULT_ALIYUN_ASR_ENDPOINT;
   const url = new URL(endpoint);
-  url.searchParams.set("appkey", process.env.NLS_APP_KEY);
+  url.searchParams.set("appkey", appKey);
   url.searchParams.set("format", inferFormat(mimeType));
   url.searchParams.set("sample_rate", String(sampleRate || process.env.ALIYUN_NLS_SAMPLE_RATE || 16000));
   url.searchParams.set("enable_punctuation_prediction", "true");
@@ -62,7 +86,7 @@ export async function transcribeCantoneseAudio({ audioBase64, mimeType, sampleRa
   const response = await fetch(url, {
     method: "POST",
     headers: {
-      "X-NLS-Token": process.env.ALIYUN_NLS_TOKEN,
+      "X-NLS-Token": token,
       "Content-Type": "application/octet-stream",
       "Content-Length": String(audioBuffer.length),
     },
@@ -72,12 +96,16 @@ export async function transcribeCantoneseAudio({ audioBase64, mimeType, sampleRa
   const payload = await response.json().catch(() => ({}));
   if (!response.ok || payload.status !== 20000000) {
     const message = payload.message || `HTTP ${response.status}`;
-    throw makeHttpError(`粤语识别失败：${message}`, 502, "ALIYUN_SPEECH_FAILED");
+    throw makeHttpError(`${label}识别失败：${message}`, 502, "ALIYUN_SPEECH_FAILED");
   }
 
   return {
     text: String(payload.result || "").trim(),
     taskId: payload.task_id,
     provider: "aliyun-nls",
+    language: lang,
   };
 }
+
+// 兼容旧调用名。
+export const transcribeCantoneseAudio = transcribeSpeechAudio;
