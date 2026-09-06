@@ -223,6 +223,10 @@ for line in body:
         date_count+=1;line='日期：{{signDate'+('A' if date_count==1 else 'B')+'}}'
     for old,new in replacements.items():line=line.replace(old,new)
     lines(d,('# ' if re.match('^[一二三四五六七八九十]+、',line) else '')+line)
+# Keep the final terms and both signatures together, including when Linux CJK
+# font metrics move the signing block onto a new page.
+for p in d.paragraphs[-7:-1]:
+    p.paragraph_format.keep_with_next=True
 save(d,m)
 
 fields=parties('甲方（合作社）','乙方（社员）')+fs('signDate|签署日期||date',True,'基本信息')+fs('cooperativeCode|合作社统一社会信用代码\nmemberId|社员身份证号码',group='主体补充信息')
