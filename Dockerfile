@@ -15,6 +15,8 @@ RUN apt-get update \
     fontconfig \
   && rm -rf /var/lib/apt/lists/*
 
+COPY server/templates/fontconfig.conf /etc/fonts/conf.d/99-legal-guard.conf
+
 WORKDIR /app/server
 COPY server/package*.json ./
 RUN npm ci --omit=dev

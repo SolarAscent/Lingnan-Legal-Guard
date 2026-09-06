@@ -2,13 +2,14 @@ import cors from "cors";
 import express from "express";
 import { execFile } from "node:child_process";
 import { existsSync } from "node:fs";
-import { mkdir, stat } from "node:fs/promises";
+import { mkdir, stat, rm, writeFile, readFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 import { nanoid } from "nanoid";
 import { z } from "zod";
-import { createContractDocx } from "./contractDocument.js";
+import { createTemplateDocx } from "./templateDocument.js";
+import { templates, getTemplate, parseContractRequest, schemaFor } from "./templateRegistry.js";
 import {
   extractContractFieldsFromTranscript,
   isDeepSeekConfigured,
@@ -27,18 +28,8 @@ const PORT = Number(process.env.PORT || 3001);
 
 const app = express();
 
-const contractSchema = z.object({
-  partyA: z.string().trim().min(1, "甲方名称为必填项").max(120),
-  partyB: z.string().trim().min(1, "乙方名称为必填项").max(120),
-  productName: z.string().trim().min(1, "产品名称为必填项").max(120),
-  quantity: z.string().trim().min(1, "数量为必填项").max(80),
-  unitPrice: z.string().trim().min(1, "单价为必填项").max(80),
-  totalPrice: z.string().trim().min(1, "总价为必填项").max(80),
-  deliveryTime: z.string().trim().min(1, "交货时间为必填项").max(120),
-  deliveryPlace: z.string().trim().min(1, "交货地点为必填项").max(160),
-});
-
 const speechSchema = z.object({
+  templateId: z.string().optional(),
   audioBase64: z.string().min(1, "请上传音频"),
   mimeType: z.string().max(100).optional(),
   sampleRate: z.number().int().positive().optional(),
@@ -93,14 +84,21 @@ async function convertDocxToPdf(docxPath, outDir) {
     throw error;
   }
 
-  await execFileAsync(soffice, [
-    "--headless",
-    "--convert-to",
-    "pdf",
-    "--outdir",
-    outDir,
-    docxPath,
-  ]);
+  const profileDir = join(outDir, '.libreoffice-profile');
+  try {
+    await execFileAsync(soffice, [
+      `-env:UserInstallation=${pathToFileURL(profileDir).href}`,
+      '--headless', '--convert-to', 'pdf', '--outdir', outDir, docxPath,
+    ], { timeout: 120000, maxBuffer: 1024 * 1024 });
+    const pdf = join(outDir, 'contract.pdf');
+    if (!(await assertReadable(pdf)) || (await stat(pdf)).size === 0) {
+      throw new Error('PDF conversion did not produce a file');
+    }
+  } catch {
+    throw Object.assign(new Error('PDF 转换失败，请稍后重试'), { statusCode: 503, code: 'PDF_CONVERSION_FAILED' });
+  } finally {
+    await rm(profileDir, { recursive: true, force: true });
+  }
 }
 
 function contractPaths(contractId) {
@@ -136,6 +134,8 @@ function sendMissing(res, type) {
 app.use(cors());
 app.use(express.json({ limit: "14mb" }));
 
+app.get("/api/templates", (_req, res) => res.json({ templates }));
+
 app.get("/api/health", async (_req, res) => {
   const soffice = await findSoffice();
   res.json({
@@ -160,8 +160,9 @@ app.post("/api/speech/cantonese", async (req, res, next) => {
   }
 
   try {
+    const template = getTemplate(result.data.templateId);
     const transcription = await transcribeSpeechAudio(result.data);
-    const extraction = await extractContractFieldsFromTranscript(transcription.text);
+    const extraction = await extractContractFieldsFromTranscript(transcription.text, template.id);
 
     if (!extraction.approved) {
       return res.status(422).json({
@@ -174,6 +175,7 @@ app.post("/api/speech/cantonese", async (req, res, next) => {
 
     return res.json({
       text: transcription.text,
+      templateId: template.id,
       taskId: transcription.taskId,
       provider: transcription.provider,
       fields: extraction.fields,
@@ -186,7 +188,7 @@ app.post("/api/speech/cantonese", async (req, res, next) => {
 });
 
 app.post("/api/contracts", async (req, res, next) => {
-  const result = contractSchema.safeParse(req.body);
+  const { template, result } = parseContractRequest(req.body);
   if (!result.success) {
     return res.status(400).json({
       error: "表单信息不完整",
@@ -201,12 +203,16 @@ app.post("/api/contracts", async (req, res, next) => {
   const paths = contractPaths(contractId);
 
   try {
-    const sanitized = await sanitizeContractFieldsWithDeepSeek(result.data);
+    const sanitized = await sanitizeContractFieldsWithDeepSeek(result.data, template.id);
+    const checkedFields = schemaFor(template).parse(sanitized.fields);
     await mkdir(paths.dir, { recursive: true });
-    await createContractDocx(sanitized.fields, paths.docx);
+    await createTemplateDocx(template.id, checkedFields, paths.docx);
     await convertDocxToPdf(paths.docx, paths.dir);
 
+    await writeFile(join(paths.dir, "metadata.json"), JSON.stringify({ templateId: template.id, title: template.title }));
     return res.status(201).json({
+      templateId: template.id,
+      templateTitle: template.title,
       id: contractId,
       previewUrl: `/api/contracts/${contractId}/preview.pdf`,
       docxUrl: `/api/contracts/${contractId}/download.docx`,
@@ -215,9 +221,17 @@ app.post("/api/contracts", async (req, res, next) => {
       normalizedBy: sanitized.source,
     });
   } catch (error) {
+    await rm(paths.dir, { recursive: true, force: true });
     return next(error);
   }
 });
+
+async function downloadName(dir) {
+  try {
+    const metadata = JSON.parse(await readFile(join(dir, 'metadata.json'), 'utf8'));
+    return getTemplate(metadata.templateId).title;
+  } catch { return '农副产品买卖合同'; }
+}
 
 app.get("/api/contracts/:id/preview.pdf", async (req, res) => {
   const paths = contractPaths(req.params.id);
@@ -230,13 +244,13 @@ app.get("/api/contracts/:id/preview.pdf", async (req, res) => {
 app.get("/api/contracts/:id/download.pdf", async (req, res) => {
   const paths = contractPaths(req.params.id);
   if (!(await assertReadable(paths.pdf))) return sendMissing(res, "PDF");
-  return res.download(paths.pdf, `nongfu-contract-${req.params.id}.pdf`);
+  return res.download(paths.pdf, `${await downloadName(paths.dir)}-${req.params.id}.pdf`);
 });
 
 app.get("/api/contracts/:id/download.docx", async (req, res) => {
   const paths = contractPaths(req.params.id);
   if (!(await assertReadable(paths.docx))) return sendMissing(res, "DOCX");
-  return res.download(paths.docx, `nongfu-contract-${req.params.id}.docx`);
+  return res.download(paths.docx, `${await downloadName(paths.dir)}-${req.params.id}.docx`);
 });
 
 if (existsSync(PUBLIC_INDEX)) {
