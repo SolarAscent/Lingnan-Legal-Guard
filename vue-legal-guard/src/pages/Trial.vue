@@ -123,6 +123,7 @@
             <div v-if="voiceText" class="transcript-box">
               <span>识别文本</span>
               <p>{{ voiceText }}</p>
+              <p v-if="voiceParsedBy === 'local-fallback'">AI 提取暂不可用，已按字段名称匹配，请核对并补充表单。</p>
             </div>
             <div v-if="missingFields.length" class="missing-fields">
               <span>还需手动补充：</span>
@@ -307,6 +308,7 @@ const loading = ref(false)
 const apiError = ref('')
 const contract = ref(null)
 const voiceText = ref('')
+const voiceParsedBy = ref('')
 const voiceError = ref('')
 const voiceLoading = ref(false)
 const isRecording = ref(false)
@@ -445,6 +447,7 @@ async function submitAudio(blob) {
     }
 
     if (disposed || templateId !== selectedTemplateId.value) return
+    voiceParsedBy.value = payload.parsedBy
     voiceText.value = payload.text || ''
     applyExtractedFields(payload.fields || {})
     missingFields.value = requiredFields.value.filter(f => !form[f.key]).map(f => f.key)
@@ -466,7 +469,8 @@ function applyExtractedFields(extractedFields) {
 
 const normalizeLabel = computed(() => {
   if (!contract.value) return ''
-  return contract.value.normalizedBy === 'deepseek' ? '已完成内容检查，按你的填写生成' : '字段已按本地规则处理'
+  if (contract.value.normalizedBy === 'local-fallback') return 'AI 检查暂不可用，本合同按原始填写生成，未完成 AI 检查，请核对全部内容。'
+  return contract.value.normalizedBy === 'deepseek' ? '已完成内容检查，按你的填写生成' : '已按原始填写生成，请核对全部内容'
 })
 
 const missingFieldLabels = computed(() => missingFields.value.map((key) => fieldLabelMap.value[key]).filter(Boolean).join('、'))

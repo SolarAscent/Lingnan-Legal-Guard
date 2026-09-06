@@ -20,6 +20,7 @@
 - `POST /api/contracts` 使用 `{ "templateId": "land-lease", "fields": { ... } }`；旧版不带 templateId 的平铺请求仍使用板块一。
 - `POST /api/speech/cantonese` 接受同样的 `templateId`，仅提取该模板字段。
 - Node 通过 `docxtemplater` / `pizzip` 填充 `{{field}}`，转义 XML、支持换行；模板路径由服务端白名单确定。
+- AI 服务网络故障、余额不足或限流时按原始填写生成，页面明确显示未完成 AI 检查。AI 明确拒绝或返回无效检查结果时仍阻止生成。
 - 元数据随生成文件保存，下载名称对应所选合同。修改表单或切换模板后前端清除旧预览，避免误下载。
 - LibreOffice 每次转换使用独立配置目录，支持并发生成。服务器需要中文字体（Dockerfile 已安装 `fonts-noto-cjk`）。
 

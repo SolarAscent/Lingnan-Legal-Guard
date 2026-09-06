@@ -35,9 +35,9 @@ async function requestFields(template, input, voice = false) {
         response_format: { type: 'json_object' }, temperature: 0, stream: false, max_tokens: 8000 }),
     });
   } catch {
-    throw Object.assign(new Error('字段处理服务连接超时或不可用，请稍后重试'), { statusCode: 502, code: 'DEEPSEEK_REQUEST_FAILED' });
+    throw Object.assign(new Error('字段处理服务连接超时或不可用，请稍后重试'), { statusCode: 502, code: 'DEEPSEEK_REQUEST_FAILED', canUseLocalFields: true });
   }
-  if (!response.ok) throw Object.assign(new Error('字段处理服务暂时不可用，请稍后重试'), { statusCode: 502, code: 'DEEPSEEK_REQUEST_FAILED' });
+  if (!response.ok) throw Object.assign(new Error('字段处理服务暂时不可用，请稍后重试'), { statusCode: 502, code: 'DEEPSEEK_REQUEST_FAILED', canUseLocalFields: [401, 402, 403, 429].includes(response.status) || response.status >= 500 });
   try {
     const data = await response.json();
     const parsed = parseJsonObject(data?.choices?.[0]?.message?.content);
@@ -51,7 +51,12 @@ export async function sanitizeContractFieldsWithDeepSeek(input, templateId = 'sa
   const template = getTemplate(templateId);
   const original = pickFields(input, template);
   if (!isDeepSeekConfigured()) return { approved: true, reason: '', fields: original, source: 'local' };
-  const parsed = await requestFields(template, { fields: original });
+  let parsed;
+  try { parsed = await requestFields(template, { fields: original }); }
+  catch (error) {
+    if (!error.canUseLocalFields) throw error;
+    return { approved: true, reason: '', fields: original, source: 'local-fallback' };
+  }
   if (!parsed.approved) throw Object.assign(new Error(parsed.reason || '表单内容不适合生成合同，请修改后重试'), { statusCode: 422, code: 'CONTRACT_INPUT_REJECTED' });
   // Review may reject a submission, but cannot silently change a legal fact.
   // The submitted field values are the authority for document filling.
@@ -87,7 +92,13 @@ export async function extractContractFieldsFromTranscript(transcript, templateId
     const fields = localExtraction(text, template);
     return { approved: true, reason: '', fields, missingFields: missing(fields, template), source: 'local' };
   }
-  const parsed = await requestFields(template, { transcript: text }, true);
+  let parsed;
+  try { parsed = await requestFields(template, { transcript: text }, true); }
+  catch (error) {
+    if (!error.canUseLocalFields) throw error;
+    const fields = localExtraction(text, template);
+    return { approved: true, reason: '', fields, missingFields: missing(fields, template), source: 'local-fallback' };
+  }
   const fields = parsed.approved ? pickFields(parsed.fields, template) : pickFields({}, template);
   if (Object.hasOwn(fields, 'receiptConfirmed')) fields.receiptConfirmed = '';
   return { approved: parsed.approved, reason: typeof parsed.reason === 'string' ? parsed.reason : '', fields, missingFields: missing(fields, template), source: 'deepseek' };

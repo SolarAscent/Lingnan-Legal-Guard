@@ -83,6 +83,14 @@ test('AI sees selected schema, cannot alter facts, reject or malformed response 
     assert.equal(result.fields.receiptConfirmed, input.receiptConfirmed);
     global.fetch = async () => ({ ok: true, json: async () => ({ choices: [{ message: { content: '{"approved":false,"reason":"拒绝","fields":{}}' } }] }) });
     await assert.rejects(() => sanitizeContractFieldsWithDeepSeek(input, 'iou'), /拒绝/);
+    global.fetch = async () => ({ ok: false, status: 402 });
+    const unavailable = await sanitizeContractFieldsWithDeepSeek(input, 'iou');
+    assert.equal(unavailable.source, 'local-fallback');
+    assert.equal(unavailable.fields.principal, input.principal);
+    assert.equal(unavailable.fields.receiptConfirmed, input.receiptConfirmed);
+    const voiceUnavailable = await extractContractFieldsFromTranscript('借款人姓名是测试借款人，借款收讫确认是已确认实际收到借款', 'iou');
+    assert.equal(voiceUnavailable.source, 'local-fallback');
+    assert.equal(voiceUnavailable.fields.receiptConfirmed, '');
     global.fetch = async () => ({ ok: true, json: async () => ({ choices: [{ message: { content: '{}' } }] }) });
     await assert.rejects(() => sanitizeContractFieldsWithDeepSeek(input, 'iou'), /无效/);
   } finally { global.fetch = previousFetch; if (old === undefined) delete process.env.DEEPSEEK_API_KEY; else process.env.DEEPSEEK_API_KEY = old; }

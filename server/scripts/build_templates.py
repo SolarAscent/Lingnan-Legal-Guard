@@ -376,6 +376,13 @@ lines(d,'''其他服务事项及标准：{{extraStandards}}
 2.本《农作物生产托管服务标准指引》一式两份，甲乙双方各执一份，附于《农业生产托管服务合同示范文本》之后，具有同等法律效力。
 甲方（签字或盖章）：________________    时间：________________
 乙方（签字或盖章）：________________    时间：________________
-''');save(d,m)
+''')
+# Keep the appendix notes with both signing lines, including after long field values.
+for paragraph in d.paragraphs[-5:]:
+    paragraph.paragraph_format.line_spacing=1.1
+    paragraph.paragraph_format.space_after=Pt(3)
+    for run in paragraph.runs: run.font.size=Pt(10)
+for paragraph in d.paragraphs[-5:-1]: paragraph.paragraph_format.keep_with_next=True
+save(d,m)
 (ROOT/'catalog.json').write_text(json.dumps(CAT,ensure_ascii=False,indent=2)+'\n')
 print('Built',len(CAT),'catalog entries and 5 editable DOCX templates')
