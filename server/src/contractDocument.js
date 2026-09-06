@@ -183,6 +183,7 @@ function signatureTable() {
     },
     rows: [
       new TableRow({
+        cantSplit: true,
         children: [
           cell(
             [
@@ -404,7 +405,7 @@ function remainingClauses(data) {
     p([run("（四）本合同未尽事宜，由甲、乙双方另行协商并签订补充协议。")], {
       indent: { firstLine: 480 },
     }),
-    p([run("以下无正文。")], { indent: { firstLine: 480 }, after: 320 }),
+    p([run("以下无正文。")], { indent: { firstLine: 480 }, after: 180, keepNext: true }),
     signatureTable(),
   ];
 }
