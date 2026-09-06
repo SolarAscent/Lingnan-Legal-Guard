@@ -53,6 +53,7 @@ function p(children = [], options = {}) {
       line: options.line ?? 380,
     },
     indent: options.indent,
+    keepNext: options.keepNext,
   });
 }
 
@@ -79,6 +80,7 @@ function clauseTitle(value) {
   return p([run(value, { bold: true, size: 28 })], {
     before: 120,
     after: 80,
+    keepNext: true,
     line: 360,
     indent: { firstLine: 480 },
   });
@@ -167,7 +169,7 @@ function productTable(data) {
   });
 }
 
-function signatureTable(data) {
+function signatureTable() {
   return new Table({
     width: { size: 100, type: WidthType.PERCENTAGE },
     layout: TableLayoutType.FIXED,
@@ -184,7 +186,7 @@ function signatureTable(data) {
         children: [
           cell(
             [
-              fillLine("甲方（签名/盖章）：", text(data.partyA), { after: 180 }),
+              fillLine("甲方（签名/盖章）：", "________________", { after: 180 }),
               blankLine("法定代表人/委托代理人：", { after: 180 }),
               blankLine("签订日期：", { after: 0 }),
             ],
@@ -192,7 +194,7 @@ function signatureTable(data) {
           ),
           cell(
             [
-              fillLine("乙方（签名/盖章）：", text(data.partyB), { after: 180 }),
+              fillLine("乙方（签名/盖章）：", "________________", { after: 180 }),
               blankLine("法定代表人/委托代理人：", { after: 180 }),
               blankLine("签订日期：", { after: 0 }),
             ],
@@ -290,7 +292,7 @@ function paymentPage(data) {
     }),
     blankLine("", { indent: { firstLine: 480 } }),
     blankLine("（二）税费由 □甲方 □乙方 承担，金额为：", { indent: { firstLine: 480 } }),
-    fillLine("（三）货款金额为：", data.totalPrice, {
+    fillLine("（三）货款金额为：", text(data.totalPrice).replace(/元$/, "").trim(), {
       indent: { firstLine: 480 },
       suffix: " 元（大写：        ）。",
       boldValue: true,
@@ -326,7 +328,6 @@ function remainingClauses(data) {
     blankLine("（二）检疫方法：", { indent: { firstLine: 480 } }),
     blankLine("（三）检疫地点：", { indent: { firstLine: 480 } }),
     blankLine("（四）检疫标准：", { indent: { firstLine: 480 } }),
-    pageBreak(),
     clauseTitle("第九条 保密要求"),
     p([run("甲、乙双方对订立合同过程中知悉的对方的商业秘密（包括技术信息和经营信息）及双方约定的其他保密信息，即                 ，无论本合同是否成立，均不得泄露或者不正当地使用；任何一方泄露、不正当地使用该商业秘密或者保密信息，给对方造成损失的，应当承担赔偿责任。")], {
       indent: { firstLine: 480 },
@@ -348,7 +349,6 @@ function remainingClauses(data) {
     p([run("（四）乙方有权要求甲方按照合同约定及时足额支付合同价款。")], { indent: { firstLine: 480 } }),
     p([run("（五）乙方有权要求甲方收到产品后及时验收并在合同约定的期限内通知验收结果。")], { indent: { firstLine: 480 } }),
     p([run("（六）法律规定或者本合同约定的其他权利义务。")], { indent: { firstLine: 480 } }),
-    pageBreak(),
     clauseTitle("第十二条 违约责任"),
     p([run("（一）因产品不交付或者交付不符合合同约定，乙方应当按照        的标准向甲方支付违约金。造成甲方损失的，乙方应当承担损失赔偿责任。")], {
       indent: { firstLine: 480 },
@@ -377,7 +377,6 @@ function remainingClauses(data) {
     p([run("（三）双方可以根据不可抗力的影响情况协商延期履行、部分履行、不履行合同或者解除合同。")], {
       indent: { firstLine: 480 },
     }),
-    pageBreak(),
     clauseTitle("第十五条 通知、送达"),
     p([run("（一）双方保证在本合同中记载的联系电话、联系地址、电子邮箱等信息均真实有效并作为本合同履行以及法院或者仲裁机构解决本合同争议时的有效联系方式和送达地址。")], {
       indent: { firstLine: 480 },
@@ -406,7 +405,7 @@ function remainingClauses(data) {
       indent: { firstLine: 480 },
     }),
     p([run("以下无正文。")], { indent: { firstLine: 480 }, after: 320 }),
-    signatureTable(data),
+    signatureTable(),
   ];
 }
 
@@ -436,11 +435,8 @@ export async function createContractDocx(data, outputPath) {
     }),
     pageBreak(),
     ...partyPage(data),
-    pageBreak(),
     ...productPage(data),
-    pageBreak(),
     ...paymentPage(data),
-    pageBreak(),
     ...remainingClauses(data),
   ];
 
@@ -458,6 +454,7 @@ export async function createContractDocx(data, outputPath) {
         properties: {
           page: {
             margin: PAGE_MARGINS,
+            size: { width: 11906, height: 16838 },
           },
         },
         footers: {

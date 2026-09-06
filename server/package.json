@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "test": "node --test test/*.test.js",
+    "test:api": "node test/api-smoke.mjs"
   },
   "keywords": [],
   "author": "",
@@ -14,8 +16,10 @@
   "dependencies": {
     "cors": "^2.8.6",
     "docx": "^9.7.1",
+    "docxtemplater": "^3.69.3",
     "express": "^5.2.1",
     "nanoid": "^5.1.11",
+    "pizzip": "^3.2.0",
     "zod": "^4.4.3"
   }
 }

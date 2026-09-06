@@ -1,0 +1,1853 @@
+[
+  {
+    "id": "sale",
+    "section": "一",
+    "title": "农副产品买卖合同",
+    "scenario": "我要买卖农产品",
+    "description": "农户、合作社与采购方约定产品、价款和交货。",
+    "source": "GF-2025-0151 示范文本",
+    "version": "1.0",
+    "summary": [
+      "买受人与出卖人",
+      "产品数量、单价与总价",
+      "交货时间与地点",
+      "买卖合同正文及签署页"
+    ],
+    "fields": [
+      {
+        "key": "partyA",
+        "label": "甲方（买受人）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyB",
+        "label": "乙方（出卖人）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "productName",
+        "label": "产品名称",
+        "placeholder": "例如：鹰嘴桃",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "quantity",
+        "label": "数量",
+        "placeholder": "例如：1000 斤",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "unitPrice",
+        "label": "单价",
+        "placeholder": "例如：12 元/斤",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "totalPrice",
+        "label": "总价",
+        "placeholder": "例如：12000 元",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "deliveryTime",
+        "label": "交货时间",
+        "placeholder": "例如：2026 年 10 月 1 日",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "deliveryPlace",
+        "label": "交货地点",
+        "placeholder": "请填写详细交货地址",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      }
+    ]
+  },
+  {
+    "id": "land-lease",
+    "section": "二",
+    "title": "农村土地经营权出租合同",
+    "scenario": "我要出租或承租土地",
+    "description": "填写土地、租期与租金，明确出租方和承租方。",
+    "source": "GF-2021-2606 示范文本",
+    "fields": [
+      {
+        "key": "partyA",
+        "label": "甲方（出租方）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyB",
+        "label": "乙方（承租方）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "landArea",
+        "label": "出租面积（亩）",
+        "placeholder": "例如：10",
+        "required": true,
+        "type": "number",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "landLocation",
+        "label": "土地坐落",
+        "placeholder": "县、乡镇、村组及地块名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "landUse",
+        "label": "土地用途",
+        "placeholder": "例如：种植水稻",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "startDate",
+        "label": "租赁开始日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "endDate",
+        "label": "租赁结束日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "deliveryDate",
+        "label": "土地交付日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "rentStandard",
+        "label": "租金标准",
+        "placeholder": "例如：每亩每年人民币 800 元",
+        "required": true,
+        "type": "textarea",
+        "group": "基本信息",
+        "maxLength": 1000
+      },
+      {
+        "key": "rentPayment",
+        "label": "租金支付安排",
+        "placeholder": "支付日期、周期和金额",
+        "required": true,
+        "type": "textarea",
+        "group": "基本信息",
+        "maxLength": 1000
+      },
+      {
+        "key": "paymentMethod",
+        "label": "付款方式",
+        "placeholder": "例如：银行汇款",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAId",
+        "label": "甲方证件号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAAddress",
+        "label": "甲方联系地址",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAPhone",
+        "label": "甲方联系电话",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBId",
+        "label": "乙方证件号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBAddress",
+        "label": "乙方联系地址",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBPhone",
+        "label": "乙方联系电话",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "contractNumber",
+        "label": "合同编号",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "partyARepresentative",
+        "label": "甲方法定代表人或农户代表人",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "partyARepresentativeId",
+        "label": "甲方代表人身份证号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAType",
+        "label": "甲方经营主体类型",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBRepresentative",
+        "label": "乙方法定代表人或农户代表人",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBRepresentativeId",
+        "label": "乙方代表人身份证号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBType",
+        "label": "乙方经营主体类型",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "parcelCode",
+        "label": "地块代码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "parcelEast",
+        "label": "东至",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "parcelSouth",
+        "label": "南至",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "parcelWest",
+        "label": "西至",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "parcelNorth",
+        "label": "北至",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "parcelGrade",
+        "label": "土地等级与类型",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "parcelNote",
+        "label": "地块备注",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体与地块详情",
+        "maxLength": 160
+      },
+      {
+        "key": "additionalParcels",
+        "label": "其他地块明细",
+        "placeholder": "逐块填写村组、名称、代码、四至、面积、等级类型",
+        "required": false,
+        "type": "textarea",
+        "group": "主体与地块详情",
+        "maxLength": 1000
+      },
+      {
+        "key": "assets",
+        "label": "附属建筑和资产现状",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "主体与地块详情",
+        "maxLength": 1000
+      },
+      {
+        "key": "assetDisposal",
+        "label": "附属建筑和资产处置方式",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "主体与地块详情",
+        "maxLength": 1000
+      },
+      {
+        "key": "rentAdjustmentYears",
+        "label": "租金调整周期（年）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "rentAdjustment",
+        "label": "租金调整方式",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "accountName",
+        "label": "甲方收款账户名称",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "accountNumber",
+        "label": "甲方银行账号",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "bankName",
+        "label": "甲方开户行",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAOtherRights",
+        "label": "甲方其他权利",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "filingDays",
+        "label": "向发包方备案期限（日）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAOtherDuties",
+        "label": "甲方其他义务",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "partyBOtherRights",
+        "label": "乙方其他权利",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "partyBOtherDuties",
+        "label": "乙方其他义务",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "permissions",
+        "label": "甲方同意的投资或经营事项",
+        "placeholder": "改良土壤、建设附属设施等，按双方实际约定填写",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "subsidies",
+        "label": "财政补贴归属",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "riskDeposit",
+        "label": "风险保障金及到期处理",
+        "placeholder": "是否缴纳、收取方、金额及处理方式",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "compensation",
+        "label": "征收等情形下附着物及青苗补偿归属",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "otherTerms",
+        "label": "其他约定",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "renewalNoticeDays",
+        "label": "续租申请提前日数",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "exitNoticeDays",
+        "label": "不续租通知提前日数",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "returnDays",
+        "label": "期满交还土地期限（日）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "facilityDisposal",
+        "label": "期满或依法提前收回时设施处置方式",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "lateDeliveryRate",
+        "label": "逾期交地违约金（年租金的万分之）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "lateDeliveryDays",
+        "label": "逾期交地解除合同日数",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "lateRentRate",
+        "label": "逾期付租违约金（年租金的万分之）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "lateRentDays",
+        "label": "逾期付租解除合同日数",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "lateReturnRate",
+        "label": "逾期还地违约金（年租金的万分之）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "supplement",
+        "label": "补充条款",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "copies",
+        "label": "合同份数",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "otherHolder",
+        "label": "其他合同持有人",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "signDate",
+        "label": "签订日期",
+        "placeholder": "",
+        "required": false,
+        "type": "date",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "signPlace",
+        "label": "签订地点",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "租金与其他约定",
+        "maxLength": 160
+      },
+      {
+        "key": "attachmentDetails",
+        "label": "附件清单情况",
+        "placeholder": "证件、权属证明、四至附图及其他附件的份数、页数",
+        "required": false,
+        "type": "textarea",
+        "group": "租金与其他约定",
+        "maxLength": 1000
+      }
+    ],
+    "summary": [
+      "双方及地块明细",
+      "土地用途、租期、交付",
+      "租金、权利义务及违约责任",
+      "十三条正文、签署页与附件清单"
+    ],
+    "version": "1.0"
+  },
+  {
+    "id": "picking-labor",
+    "section": "三",
+    "title": "采茶叶劳务合同",
+    "scenario": "我要请人采摘茶叶",
+    "description": "约定茶叶采摘标准、工作时间、劳务报酬与保障。",
+    "source": "采茶叶劳务合同范本",
+    "fields": [
+      {
+        "key": "partyA",
+        "label": "甲方（雇主）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyB",
+        "label": "乙方（雇员）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "workPlace",
+        "label": "茶园地点",
+        "placeholder": "请填写具体茶园地点",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "pickingStandard",
+        "label": "茶叶品种及采摘标准",
+        "placeholder": "请填写品种、等级和采摘要求",
+        "required": true,
+        "type": "textarea",
+        "group": "基本信息",
+        "maxLength": 1000
+      },
+      {
+        "key": "startDate",
+        "label": "劳务开始日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "endDate",
+        "label": "劳务结束日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "payStandard",
+        "label": "劳务计价方式",
+        "placeholder": "例如：每斤合格茶叶 8 元",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "acceptanceDays",
+        "label": "验收期限（工作日）",
+        "placeholder": "例如：3",
+        "required": true,
+        "type": "number",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "paymentMethod",
+        "label": "报酬支付方式",
+        "placeholder": "例如：银行转账",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "workHours",
+        "label": "每日工作时间",
+        "placeholder": "例如：上午 8 点至下午 5 点",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "restDays",
+        "label": "每周休息天数",
+        "placeholder": "例如：1",
+        "required": true,
+        "type": "number",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAId",
+        "label": "甲方证件号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAAddress",
+        "label": "甲方联系地址",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAPhone",
+        "label": "甲方联系电话",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBId",
+        "label": "乙方证件号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBAddress",
+        "label": "乙方联系地址",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBPhone",
+        "label": "乙方联系电话",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "bankName",
+        "label": "乙方开户银行",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "accountName",
+        "label": "乙方账户名称",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "accountNumber",
+        "label": "乙方账号",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "insurance",
+        "label": "保险名称",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "latePayRate",
+        "label": "逾期支付每日违约金比例（%）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "signDateA",
+        "label": "甲方签订日期",
+        "placeholder": "",
+        "required": false,
+        "type": "date",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "signDateB",
+        "label": "乙方签订日期",
+        "placeholder": "",
+        "required": false,
+        "type": "date",
+        "group": "补充信息",
+        "maxLength": 160
+      }
+    ],
+    "summary": [
+      "雇主与雇员信息",
+      "茶园地点、采摘标准与期限",
+      "计酬、验收与支付",
+      "十一条正文与签署页"
+    ],
+    "version": "1.0"
+  },
+  {
+    "id": "cooperative",
+    "section": "四",
+    "title": "社员加入农民专业合作社合同",
+    "scenario": "我要加入养殖合作社",
+    "description": "适用于畜禽养殖合作社入社，约定社员服务与权利义务。",
+    "source": "社员加入农业养殖专业合作社协议",
+    "fields": [
+      {
+        "key": "partyA",
+        "label": "甲方（合作社）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyB",
+        "label": "乙方（社员）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "signDate",
+        "label": "签署日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "cooperativeCode",
+        "label": "合作社统一社会信用代码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "memberId",
+        "label": "社员身份证号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体补充信息",
+        "maxLength": 160
+      }
+    ],
+    "summary": [
+      "合作社与入社成员",
+      "七项养殖服务与业务约定",
+      "社员权利与义务",
+      "六条正文与签署页"
+    ],
+    "version": "1.0"
+  },
+  {
+    "id": "iou",
+    "section": "五",
+    "title": "借条",
+    "scenario": "我要写一张借条",
+    "description": "用于已实际交付的农户小额借款，填写金额、期限和利息约定。",
+    "source": "个人借条范本 · 承德市司法局",
+    "fields": [
+      {
+        "key": "lender",
+        "label": "出借人姓名",
+        "placeholder": "请填写出借人真实姓名",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "borrower",
+        "label": "借款人姓名",
+        "placeholder": "请填写借款人真实姓名",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "loanPurpose",
+        "label": "借款用途",
+        "placeholder": "例如：购买种子和化肥",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "principal",
+        "label": "借款本金（元）",
+        "placeholder": "例如：10000.00",
+        "required": true,
+        "type": "number",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "principalChinese",
+        "label": "借款本金大写",
+        "placeholder": "例如：人民币壹万元整",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "loanTerm",
+        "label": "借款期限",
+        "placeholder": "例如：六个月",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "loanDate",
+        "label": "收到借款日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "dueDate",
+        "label": "还款到期日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "transferMethod",
+        "label": "借款交付方式",
+        "placeholder": "例如：银行转账",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "interestTerms",
+        "label": "借期利息约定",
+        "placeholder": "明确填写无息或具体利率及计息方式",
+        "required": true,
+        "type": "textarea",
+        "group": "基本信息",
+        "maxLength": 1000
+      },
+      {
+        "key": "overdueTerms",
+        "label": "逾期利息约定",
+        "placeholder": "按双方实际约定填写",
+        "required": true,
+        "type": "textarea",
+        "group": "基本信息",
+        "maxLength": 1000
+      },
+      {
+        "key": "receiptConfirmed",
+        "label": "借款收讫确认",
+        "placeholder": "",
+        "required": true,
+        "type": "select",
+        "group": "基本信息",
+        "maxLength": 160,
+        "options": [
+          "已确认实际收到借款"
+        ]
+      },
+      {
+        "key": "lenderId",
+        "label": "出借人身份证号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "borrowerId",
+        "label": "借款人身份证号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "borrowerPhone",
+        "label": "借款人联系电话",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "borrowerAddress",
+        "label": "借款人家庭住址",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "coBorrower",
+        "label": "共同借款人姓名（如有）",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "coBorrowerId",
+        "label": "共同借款人身份证号码",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "补充信息",
+        "maxLength": 160
+      },
+      {
+        "key": "signDate",
+        "label": "立据日期",
+        "placeholder": "",
+        "required": false,
+        "type": "date",
+        "group": "补充信息",
+        "maxLength": 160
+      }
+    ],
+    "summary": [
+      "出借人和借款人",
+      "实收本金、交付方式与用途",
+      "借期、到期日与利息约定",
+      "借款人及可选共同借款人签署"
+    ],
+    "version": "1.0"
+  },
+  {
+    "id": "farm-service",
+    "section": "六",
+    "title": "农业生产托管服务合同",
+    "scenario": "我要托管农业生产",
+    "description": "约定耕种防收等服务，填写费用、验收和逐项服务标准。",
+    "source": "农业农村部农业生产托管服务合同示范文本",
+    "fields": [
+      {
+        "key": "partyA",
+        "label": "甲方（接受服务方）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "partyB",
+        "label": "乙方（提供服务方）",
+        "placeholder": "请填写完整姓名或名称",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "county",
+        "label": "服务地县市区",
+        "placeholder": "",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "town",
+        "label": "服务地乡镇街道",
+        "placeholder": "",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "village",
+        "label": "服务地村社区",
+        "placeholder": "",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "villageGroup",
+        "label": "村民或居民小组",
+        "placeholder": "",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "serviceArea",
+        "label": "服务面积（亩）",
+        "placeholder": "例如：20",
+        "required": true,
+        "type": "number",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "crop",
+        "label": "托管作物",
+        "placeholder": "例如：水稻",
+        "required": true,
+        "type": "text",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "serviceItems",
+        "label": "托管服务环节",
+        "placeholder": "例如：耕整地、种植、收获",
+        "required": true,
+        "type": "textarea",
+        "group": "基本信息",
+        "maxLength": 1000
+      },
+      {
+        "key": "startDate",
+        "label": "服务开始日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "endDate",
+        "label": "服务结束日期",
+        "placeholder": "",
+        "required": true,
+        "type": "date",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "servicePrice",
+        "label": "服务单价（元/亩）",
+        "placeholder": "例如：200",
+        "required": true,
+        "type": "number",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "totalFee",
+        "label": "服务总费用（元）",
+        "placeholder": "例如：4000",
+        "required": true,
+        "type": "number",
+        "group": "基本信息",
+        "maxLength": 160
+      },
+      {
+        "key": "serviceStandards",
+        "label": "双方约定的服务标准",
+        "placeholder": "写明技术、质量和验收要求；附件可逐项补充",
+        "required": true,
+        "type": "textarea",
+        "group": "基本信息",
+        "maxLength": 1000
+      },
+      {
+        "key": "contractNumber",
+        "label": "合同编号",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "signDate",
+        "label": "签订日期",
+        "placeholder": "",
+        "required": false,
+        "type": "date",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "partyARepresentative",
+        "label": "甲方法定代表人及身份证号",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAAddress",
+        "label": "甲方地址",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "partyAPhone",
+        "label": "甲方联系方式",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBRepresentative",
+        "label": "乙方法定代表人及身份证号",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBAddress",
+        "label": "乙方地址",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "partyBPhone",
+        "label": "乙方联系方式",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "additionalPlots",
+        "label": "其他托管地块及作物",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "主体、费用与补充约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "schedule",
+        "label": "分项服务时间安排",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "主体、费用与补充约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "totalFeeChinese",
+        "label": "总费用大写",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "depositPercentChinese",
+        "label": "订金比例大写",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "depositPercent",
+        "label": "订金比例（%）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "depositAmount",
+        "label": "订金金额（元）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "depositChinese",
+        "label": "订金金额大写",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "balanceDays",
+        "label": "验收后尾款支付期限（日）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "balanceAmount",
+        "label": "尾款金额（元）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "balanceChinese",
+        "label": "尾款金额大写",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "necessaryConditions",
+        "label": "甲方提供的作业条件和时间",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "主体、费用与补充约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "lateFeePercentChinese",
+        "label": "每日逾期违约金比例大写",
+        "placeholder": "",
+        "required": false,
+        "type": "text",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "lateFeePercent",
+        "label": "每日逾期违约金比例（%）",
+        "placeholder": "",
+        "required": false,
+        "type": "number",
+        "group": "主体、费用与补充约定",
+        "maxLength": 160
+      },
+      {
+        "key": "otherTerms",
+        "label": "其他约定事宜",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "主体、费用与补充约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "extraStandards",
+        "label": "其他服务事项及标准",
+        "placeholder": "",
+        "required": false,
+        "type": "textarea",
+        "group": "主体、费用与补充约定",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard1",
+        "label": "备耕 · 备耕时间",
+        "placeholder": "甲乙双方可协商约定备耕时间范围。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard2",
+        "label": "备耕 · 农资采购",
+        "placeholder": "根据托管规模制定年度生产计划，列出种、肥、药等农资采购品种、单价、单位用量及配给方式，同时注明农资采购完成时间。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard3",
+        "label": "备耕 · 农机选用",
+        "placeholder": "每个作业环节所用农机型号及作业能力，同时注明农机保障完成时间。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard4",
+        "label": "耕整地 · 作业模式",
+        "placeholder": "根据当地耕作制度和生产实际，列出主要耕整地模式，如旋耕、深翻、深耕、免耕等方式。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard5",
+        "label": "耕整地 · 作业时间范围",
+        "placeholder": "根据农时，列出耕整地作业起止时间范围及进度安排。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard6",
+        "label": "耕整地 · 作业技术要求",
+        "placeholder": "作业要求列出所采用机械的作业深度、作业幅宽、作业速度等技术指标。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard7",
+        "label": "耕整地 · 作业质量",
+        "placeholder": "说明各个作业环节可达到的作业效果。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard8",
+        "label": "种子处理 · 种子处理工艺",
+        "placeholder": "如包衣等，说明使用的药剂及其成份和用量。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard9",
+        "label": "种子处理 · 种子处理时间",
+        "placeholder": "根据农时，说明种子处理时间范围和进度安排。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard10",
+        "label": "种子处理 · 种子处理要求",
+        "placeholder": "说明种子处理应达到的效果。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard11",
+        "label": "种植 · 种植方式",
+        "placeholder": "按种子品类、耕作制度、地块面积、土壤特性等综合选定不同种植方式。如免耕播种、常规播种、移栽等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard12",
+        "label": "种植 · 种植时间范围",
+        "placeholder": "根据农时，注明作业起止时间范围和进度安排。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard13",
+        "label": "种植 · 作业要求",
+        "placeholder": "列出所采用机械的作业幅宽、速度、深度、行距、株距，以及种、肥、药等农资使用量。非直播水田插秧在本环节说明。播种同时采用机械施底肥，列出机械作业方式（如侧施肥）、幅宽、速度、深度、种肥间距等特性并注明用肥品类品牌、施用方法和施肥量。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard14",
+        "label": "种植 · 作业效果",
+        "placeholder": "说明可达到的作业效果。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard15",
+        "label": "田间管理／中耕追肥 · 时间范围",
+        "placeholder": "说明进行中耕追肥的时间范围。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard16",
+        "label": "田间管理／中耕追肥 · 作业要求",
+        "placeholder": "根据农艺技术要求，确定采用机械的作业幅宽、速度、深度等特性，并注明用肥品类、施用方法和施肥量。水田不进行中耕，但不同生育期需肥量、品类和施用方法要注明。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard17",
+        "label": "田间管理／中耕追肥 · 作业效果",
+        "placeholder": "说明中耕追肥需要达到的指标如耕深、培土厚度、精准施肥等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard18",
+        "label": "田间管理／灌溉 · 灌溉时间范围",
+        "placeholder": "说明灌溉的时间范围。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard19",
+        "label": "田间管理／灌溉 · 灌溉制度",
+        "placeholder": "按作物不同生育期需水量标准，同时结合当地实际情况制定灌溉制度，如采用水肥一体化技术。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard20",
+        "label": "田间管理／灌溉 · 灌溉技术要求及作业效果",
+        "placeholder": "说明采用的灌溉技术要求，如灌溉水源、灌溉量等。说明灌溉应达到什么效果。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard21",
+        "label": "田间管理／植保 · 植保方案",
+        "placeholder": "针对作物不同生育期易发生的病虫草害，制定科学防治预案，注明易爆发的时间范围、诱发环境和形成灾害的表现，列出对应适用的“农业防治、生物防治、物理防治和化学防治”等防治措施，包括相应的药剂施用方案、设备设施布置方案、天敌释放数量方案等。本部分难点在于灾害诊断，各服务主体应有专业的技术人员（或聘任兼职专家）负责防治方案的制定和实施，或将本项工作托管给专业的植保队伍。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard22",
+        "label": "田间管理／植保 · 植保作业机具",
+        "placeholder": "列出植保方案中的作业机具，如无人机、高地隙植保机等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard23",
+        "label": "田间管理／植保 · 植保作业效果",
+        "placeholder": "说明植保作业的效果。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard24",
+        "label": "作物收获 · 收获机机型",
+        "placeholder": "按作物品种、收获物、地块面积和地形条件选择收割机机型。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard25",
+        "label": "作物收获 · 作业时间范围",
+        "placeholder": "按作物成熟度、气象条件、土壤条件等作业条件要求，确定收割时间及作业进度。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard26",
+        "label": "作物收获 · 作业要求",
+        "placeholder": "列出所采用收割机的作业宽度、速度、秸秆切碎长度、割茬高度、籽粒损失率、果穗损失率、籽粒破碎率、秸秆抛撒不均匀率等作业特性。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard27",
+        "label": "作物收获 · 作业效果",
+        "placeholder": "说明可达到的作业效果。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard28",
+        "label": "秸秆处理 · 秸秆处理情况",
+        "placeholder": "根据农业生产服务主体实际情况，说明作物秸秆利用时间和利用情况，包括秸秆离田、秸秆还田。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard29",
+        "label": "秸秆处理 · 秸秆离田农机具",
+        "placeholder": "如果秸秆离田，列出所用打包机、制粒机、运输车辆、装卸搬运机械等机具的名称、型号、作业效率等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard30",
+        "label": "秸秆处理 · 秸秆还田方式",
+        "placeholder": "如果秸秆还田，说明采用的还田方式，如秸秆全量粉碎还田、秸秆覆盖还田、翻埋（压）还田等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard31",
+        "label": "秸秆处理 · 秸秆还田农机具",
+        "placeholder": "列出所用机具名称、型号、作业效率等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard32",
+        "label": "烘干及仓储 · 烘干标准及方式",
+        "placeholder": "依据作物用途确定烘干时间、烘干标准和烘干方式，如热风干燥、微波干燥等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard33",
+        "label": "烘干及仓储 · 烘干机",
+        "placeholder": "列出采用烘干机型号、烘干效率及达到的烘干质量。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard34",
+        "label": "烘干及仓储 · 仓储方式及要求",
+        "placeholder": "说明仓储时间和方式，一般烘干结束后应将作物按品种分类仓储，保证不混杂，粮仓保持日常通风干燥，有效保障作物品质。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard35",
+        "label": "销售 · 销售约定",
+        "placeholder": "约定销售时间或销售价格等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard36",
+        "label": "技术集成解决方案 · 技术方案",
+        "placeholder": "水肥药托管方案或全程种植技术解决方案等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      },
+      {
+        "key": "standard37",
+        "label": "全程托管 · 产量收益与补偿",
+        "placeholder": "约定亩均农作物产量或亩均农作物收益，如未达到约定产量或收益，双方协商补偿金额或具体补偿方式等。",
+        "required": false,
+        "type": "textarea",
+        "group": "附件服务标准",
+        "maxLength": 1000
+      }
+    ],
+    "summary": [
+      "服务双方、地块与作物",
+      "服务内容、期限与费用",
+      "九条正文及签署页",
+      "可填写的完整服务标准附件"
+    ],
+    "version": "1.0"
+  }
+]

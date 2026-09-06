@@ -12,17 +12,23 @@
     </header>
 
     <main class="workspace">
+      <div v-if="catalogLoading" class="catalog-state" role="status">正在加载合同模板…</div>
+      <div v-else-if="catalogError" class="catalog-state inline-alert error" role="alert">
+        <span>{{ catalogError }}</span><button class="secondary-action" @click="loadTemplates">重新加载</button>
+      </div>
+      <template v-if="currentTemplate">
       <section class="hero-band">
         <div class="hero-copy">
           <p class="eyebrow">合同生成工作台</p>
-          <h1>说清楚这笔买卖，<br />AI 帮你生成一份规范合同</h1>
+          <h1>选对合同，<br />把每一份约定说清楚</h1>
           <p class="hero-description">
-            选个场景，手动填写或用粤语 / 普通话语音说一说，10 分钟生成一份规范的农副产品买卖合同，支持 PDF 与 Word 下载，完全免费。
+            从买卖农产品到土地出租、采摘用工和农业托管，选择适合你的模板，填写双方约定，预览并下载 Word 或 PDF。
           </p>
         </div>
         <div class="hero-status">
-          <span>农副产品买卖合同</span>
-          <strong>{{ contract ? '已生成合同' : '等待填写' }}</strong>
+          <span>当前选择 · 板块{{ currentTemplate.section }}</span>
+          <h2>{{ currentTemplate.title }}</h2>
+          <strong>{{ contract ? '已生成合同' : `已填 ${completedFields} / ${requiredFields.length} 项` }}</strong>
         </div>
       </section>
 
@@ -30,37 +36,43 @@
         <div class="section-title">
           <div>
             <p class="kicker">第一步</p>
-            <h2>先选一个场景</h2>
-            <p>按你平时的说法选一个，我们已经对应到规范的合同模板。</p>
+            <h2>选择你的合同模板</h2>
+            <p>六个板块，对应六种约定。切换模板时，本页填写的内容会为你保留。</p>
           </div>
         </div>
-        <div class="scenario-grid">
+        <div class="scenario-grid" role="group" aria-label="选择合同模板">
           <button
-            v-for="scenario in scenarios"
+            v-for="scenario in templates"
             :key="scenario.id"
             type="button"
             class="scenario-card"
-            :class="{ active: selectedScenario === scenario.id }"
-            @click="applyScenario(scenario)"
+            :class="{ active: selectedTemplateId === scenario.id }"
+            :aria-pressed="selectedTemplateId === scenario.id"
+            :disabled="busy"
+            @click="selectTemplate(scenario.id)"
           >
-            <span class="scenario-icon"><i :class="scenario.icon"></i></span>
+            <span class="template-number">板块{{ scenario.section }}</span>
+            <span class="scenario-icon"><i :class="templateIcons[scenario.id]" aria-hidden="true"></i></span>
             <span>
-              <strong>{{ scenario.title }}</strong>
-              <small>{{ scenario.subtitle }}</small>
+              <strong>{{ scenario.scenario }}</strong>
+              <small>{{ scenario.title }}</small>
             </span>
+            <span class="selection-check" aria-hidden="true">{{ selectedTemplateId === scenario.id ? '✓' : '↗' }}</span>
           </button>
         </div>
+        <p class="selection-note" aria-live="polite">{{ currentTemplate.description }}</p>
       </section>
 
-      <div class="content-grid">
+      <Transition name="template-change" mode="out-in">
+      <div :key="selectedTemplateId" class="content-grid">
         <section class="form-panel" aria-label="合同信息表单">
           <div class="section-title form-title">
             <div>
               <p class="kicker">第二步</p>
               <h2>合同基础信息</h2>
-              <p>{{ scenarioHint }}</p>
+              <p>标 * 的为必填项，其他约定可在下方展开补充。</p>
             </div>
-            <span class="template-pill">买卖合同</span>
+            <span class="template-pill">板块{{ currentTemplate.section }}</span>
           </div>
 
           <section class="voice-panel" aria-label="语音输入">
@@ -75,7 +87,7 @@
               <button
                 type="button"
                 :class="['lang-chip', { active: voiceLang === 'cantonese' }]"
-                :disabled="voiceLoading || isRecording"
+                :disabled="busy"
                 @click="voiceLang = 'cantonese'"
               >
                 粤语
@@ -83,21 +95,21 @@
               <button
                 type="button"
                 :class="['lang-chip', { active: voiceLang === 'mandarin' }]"
-                :disabled="voiceLoading || isRecording"
+                :disabled="busy"
                 @click="voiceLang = 'mandarin'"
               >
                 普通话
               </button>
             </div>
             <div class="voice-actions">
-              <button type="button" class="secondary-action" :disabled="voiceLoading" @click="toggleRecording">
+              <button type="button" class="secondary-action" :disabled="voiceLoading || loading || recordingStarting" @click="toggleRecording">
                 <i :class="isRecording ? 'fa-solid fa-stop' : 'fa-solid fa-microphone'"></i>
                 {{ isRecording ? '停止录音' : '开始录音' }}
               </button>
               <label class="upload-action">
                 <i class="fa-solid fa-file-audio"></i>
                 上传音频
-                <input type="file" accept="audio/*" :disabled="voiceLoading" @change="handleAudioUpload" />
+                <input type="file" accept="audio/*" :disabled="busy" @change="handleAudioUpload" />
               </label>
               <span v-if="voiceLoading" class="voice-loading">
                 <i class="fa-solid fa-circle-notch fa-spin"></i>
@@ -119,29 +131,25 @@
           </section>
 
           <form class="contract-form" @submit.prevent="generateContract">
-            <div v-for="field in fields" :key="field.key" class="field">
-              <label :for="field.key">
-                {{ field.label }}
-                <span>*</span>
-              </label>
-              <input
-                :id="field.key"
-                v-model.trim="form[field.key]"
-                :type="field.type || 'text'"
-                :placeholder="field.placeholder"
-                :aria-invalid="Boolean(errors[field.key])"
-                :class="{ invalid: errors[field.key] }"
-                @input="errors[field.key] = ''"
-              />
-              <p v-if="errors[field.key]" class="field-error">{{ errors[field.key] }}</p>
-            </div>
+            <ContractField v-for="field in requiredFields" :key="field.key" :field="field"
+              :model-value="form[field.key]" :error="errors[field.key]" :disabled="busy"
+              @update:model-value="setField(field.key, $event)" />
+            <details v-for="group in optionalGroups" :key="group.name" class="optional-group" :open="groupHasError(group)">
+              <summary>{{ group.name }}<span>{{ group.fields.length }} 项选填</span></summary>
+              <div class="optional-fields">
+                <ContractField v-for="field in group.fields" :key="field.key" :field="field"
+                  :model-value="form[field.key]" :error="errors[field.key]" :disabled="busy"
+                  @update:model-value="setField(field.key, $event)" />
+              </div>
+            </details>
+            <p class="form-note">未填写的补充项将保留空白。生成后请核对全部条款，补齐适用约定，再由双方签署。</p>
 
             <div class="form-actions">
-              <button type="submit" class="primary-action" :disabled="loading">
+              <button type="submit" class="primary-action" :disabled="busy">
                 <i v-if="loading" class="fa-solid fa-circle-notch fa-spin"></i>
                 {{ loading ? '正在生成合同' : '生成合同' }}
               </button>
-              <button type="button" class="secondary-action" :disabled="loading" @click="resetForm">
+              <button type="button" class="secondary-action" :disabled="busy" @click="resetForm">
                 清空
               </button>
             </div>
@@ -157,12 +165,14 @@
             </div>
           </div>
 
+          <p class="template-source">{{ currentTemplate.source }}</p>
           <ul class="mapping-list">
-            <li><span>双方</span>甲方、乙方名称与信息</li>
-            <li><span>标的</span>产品名称、数量与单价</li>
-            <li><span>价款</span>合同总价</li>
-            <li><span>交付</span>交货时间与交货地点</li>
+            <li v-for="(item, index) in currentTemplate.summary" :key="item"><span>{{ index + 1 }}</span>{{ item }}</li>
           </ul>
+          <div class="completion-meter" :aria-label="`必填信息已完成 ${completedFields} 项，共 ${requiredFields.length} 项`">
+            <div><span>必填信息</span><strong>{{ completedFields }} / {{requiredFields.length}}</strong></div>
+            <progress :value="completedFields" :max="requiredFields.length"></progress>
+          </div>
 
           <div v-if="apiError" class="status-box error" role="alert">
             <i class="fa-solid fa-circle-exclamation"></i>
@@ -184,12 +194,12 @@
           <div v-else class="status-box neutral">
             <i class="fa-solid fa-circle-info"></i>
             <div>
-              <strong>等待生成</strong>
-              <p>提交表单后将在下方显示 PDF 预览。</p>
+              <strong>{{ loading ? '正在生成合同' : '等待生成' }}</strong>
+              <p>{{ loading ? '正在排版并转换 PDF，请稍候。' : '提交表单后将在下方显示 PDF 预览。' }}</p>
             </div>
           </div>
 
-          <div class="download-actions" :class="{ disabled: !contract }">
+          <div v-if="contract" class="download-actions">
             <a :href="contract?.pdfUrl || '#'" :aria-disabled="!contract">
               <i class="fa-solid fa-file-pdf"></i>
               下载 PDF
@@ -201,6 +211,8 @@
           </div>
         </aside>
       </div>
+
+      </Transition>
 
       <section class="preview-section" aria-label="合同预览">
         <div class="preview-toolbar">
@@ -219,7 +231,7 @@
           <iframe
             v-if="contract"
             :src="`${contract.previewUrl}#toolbar=1&navpanes=0`"
-            title="农副产品买卖合同 PDF 预览"
+            :title="`${currentTemplate.title} PDF 预览`"
           ></iframe>
           <div v-else class="preview-empty">
             <i class="fa-regular fa-file-lines"></i>
@@ -227,79 +239,73 @@
           </div>
         </div>
       </section>
+      </template>
     </main>
   </div>
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, reactive, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
+import ContractField from '../components/ContractField.vue'
 
-const initialForm = {
-  partyA: '',
-  partyB: '',
-  productName: '',
-  quantity: '',
-  unitPrice: '',
-  totalPrice: '',
-  deliveryTime: '',
-  deliveryPlace: '',
+const templates = ref([])
+const catalogLoading = ref(true)
+const catalogError = ref('')
+const selectedTemplateId = ref('sale')
+const currentTemplate = computed(() => templates.value.find(t => t.id === selectedTemplateId.value))
+const fields = computed(() => currentTemplate.value?.fields || [])
+const requiredFields = computed(() => fields.value.filter(f => f.required))
+const completedFields = computed(() => requiredFields.value.filter(f => String(form[f.key] || '').trim()).length)
+const optionalGroups = computed(() => {
+  const groups = new Map()
+  fields.value.filter(f => !f.required).forEach(f => {
+    if (!groups.has(f.group)) groups.set(f.group, [])
+    groups.get(f.group).push(f)
+  })
+  return [...groups].map(([name, fields]) => ({ name, fields }))
+})
+const fieldLabelMap = computed(() => Object.fromEntries(fields.value.map(f => [f.key, f.label])))
+const templateIcons = { sale: 'fa-solid fa-basket-shopping', 'land-lease': 'fa-solid fa-seedling', 'picking-labor': 'fa-solid fa-leaf', cooperative: 'fa-solid fa-people-group', iou: 'fa-solid fa-pen-nib', 'farm-service': 'fa-solid fa-tractor' }
+const drafts = new Map()
+const form = reactive({})
+const recordingStarting = ref(false)
+const busy = computed(() => loading.value || voiceLoading.value || isRecording.value || recordingStarting.value)
+let disposed = false
+const requestController = new AbortController()
+async function loadTemplates() {
+  catalogLoading.value = true
+  catalogError.value = ''
+  try {
+    const response = await fetch('/api/templates', { signal: requestController.signal })
+    if (!response.ok) throw new Error('模板加载失败，请重新加载。')
+    const payload = await response.json()
+    if (!Array.isArray(payload.templates) || !payload.templates.length) throw new Error('暂无可用模板，请稍后重试。')
+    templates.value = payload.templates
+    const requested = new URLSearchParams(window.location.hash.split('?')[1] || '').get('template')
+    selectTemplate(templates.value.some(t => t.id === requested) ? requested : 'sale', true)
+  } catch (error) {
+    if (!disposed) catalogError.value = error.message || '无法连接模板服务，请重新加载。'
+  } finally { catalogLoading.value = false }
 }
-
-const fields = [
-  { key: 'partyA', label: '甲方名称', placeholder: '例如：河源市某某商贸有限公司' },
-  { key: 'partyB', label: '乙方名称', placeholder: '例如：连平县某某种植专业合作社' },
-  { key: 'productName', label: '产品名称', placeholder: '例如：鹰嘴桃' },
-  { key: 'quantity', label: '数量', placeholder: '例如：1000 斤' },
-  { key: 'unitPrice', label: '单价', placeholder: '例如：12 元/斤' },
-  { key: 'totalPrice', label: '总价', placeholder: '例如：12000 元' },
-  { key: 'deliveryTime', label: '交货时间', placeholder: '例如：2026 年 7 月 1 日' },
-  { key: 'deliveryPlace', label: '交货地点', placeholder: '例如：广东省河源市连平县' },
-]
-
-const fieldLabelMap = Object.fromEntries(fields.map((field) => [field.key, field.label]))
-
-const scenarios = [
-  {
-    id: 'sell-lychee',
-    title: '我要卖荔枝',
-    subtitle: '农户向采购方供货',
-    icon: 'fa-solid fa-seedling',
-    productName: '荔枝',
-    hint: '适合农户、合作社把荔枝卖给采购方。',
-  },
-  {
-    id: 'sell-peach',
-    title: '我要卖鹰嘴桃',
-    subtitle: '特色水果买卖',
-    icon: 'fa-solid fa-basket-shopping',
-    productName: '鹰嘴桃',
-    hint: '适合特色水果产地直供和批量采购。',
-  },
-  {
-    id: 'buy-rice',
-    title: '我要收购稻谷',
-    subtitle: '粮食收购登记',
-    icon: 'fa-solid fa-wheat-awn',
-    productName: '晚稻谷',
-    hint: '适合买方向农户或合作社收购稻谷。',
-  },
-  {
-    id: 'cooperative-supply',
-    title: '我要签合作社供货',
-    subtitle: '合作社统一销售',
-    icon: 'fa-solid fa-people-group',
-    productName: '农副产品',
-    hint: '适合合作社与采购商约定一批农副产品供货。',
-  },
-]
-
-const form = reactive({ ...initialForm })
+function selectTemplate(id, initial = false) {
+  if (busy.value || (!initial && id === selectedTemplateId.value)) return
+  if (!initial) drafts.set(selectedTemplateId.value, { ...form })
+  selectedTemplateId.value = id
+  Object.keys(form).forEach(key => delete form[key])
+  Object.assign(form, Object.fromEntries(fields.value.map(f => [f.key, ''])), drafts.get(id) || {})
+  clearStatus()
+}
+function clearStatus() {
+  Object.keys(errors).forEach(key => delete errors[key])
+  apiError.value = ''; contract.value = null; voiceText.value = ''; voiceError.value = ''; missingFields.value = []
+}
+function setField(key, value) { form[key] = value; errors[key] = '' }
+function groupHasError(group) { return group.fields.some(f => errors[f.key]) || undefined }
+onMounted(loadTemplates)
 const errors = reactive({})
 const loading = ref(false)
 const apiError = ref('')
 const contract = ref(null)
-const selectedScenario = ref(scenarios[0].id)
-const scenarioHint = ref(scenarios[0].hint)
 const voiceText = ref('')
 const voiceError = ref('')
 const voiceLoading = ref(false)
@@ -311,20 +317,11 @@ let mediaRecorder = null
 let mediaStream = null
 let recordedChunks = []
 
-function applyScenario(scenario) {
-  selectedScenario.value = scenario.id
-  scenarioHint.value = scenario.hint
-  if (!form.productName || fields.some((field) => field.key === 'productName')) {
-    form.productName = scenario.productName
-    errors.productName = ''
-  }
-}
-
 function validate() {
   let valid = true
-  fields.forEach((field) => {
+  fields.value.forEach((field) => {
     errors[field.key] = ''
-    if (!String(form[field.key] || '').trim()) {
+    if (field.required && !String(form[field.key] || '').trim()) {
       errors[field.key] = `${field.label}为必填项`
       valid = false
     }
@@ -333,6 +330,7 @@ function validate() {
 }
 
 async function generateContract() {
+  if (busy.value) return
   apiError.value = ''
   contract.value = null
   if (!validate()) return
@@ -342,10 +340,12 @@ async function generateContract() {
     const response = await fetch('/api/contracts', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ templateId: selectedTemplateId.value, fields: { ...form } }),
+      signal: requestController.signal,
     })
     const payload = await response.json().catch(() => ({}))
     if (!response.ok) {
+      payload.details?.forEach(issue => { if (Object.hasOwn(form, issue.path)) errors[issue.path] = issue.message })
       throw new Error(payload.error || '合同生成失败，请稍后重试')
     }
     contract.value = payload
@@ -357,17 +357,12 @@ async function generateContract() {
 }
 
 function resetForm() {
-  Object.assign(form, initialForm)
-  applyScenario(scenarios[0])
-  Object.keys(errors).forEach((key) => {
-    errors[key] = ''
-  })
-  apiError.value = ''
-  contract.value = null
-  voiceText.value = ''
-  voiceError.value = ''
-  missingFields.value = []
+  if (busy.value) return
+  Object.keys(form).forEach(key => { form[key] = '' })
+  drafts.delete(selectedTemplateId.value)
+  clearStatus()
 }
+watch(form, () => { contract.value = null; apiError.value = '' }, { flush: 'sync' })
 
 function preferredMimeType() {
   const options = ['audio/ogg;codecs=opus', 'audio/webm;codecs=opus', 'audio/webm']
@@ -386,8 +381,10 @@ async function toggleRecording() {
     return
   }
 
+  recordingStarting.value = true
   try {
     mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    if (disposed) { mediaStream.getTracks().forEach(track => track.stop()); return }
     recordedChunks = []
     const mimeType = preferredMimeType()
     mediaRecorder = new MediaRecorder(mediaStream, mimeType ? { mimeType } : undefined)
@@ -398,13 +395,13 @@ async function toggleRecording() {
       isRecording.value = false
       mediaStream?.getTracks().forEach((track) => track.stop())
       const blob = new Blob(recordedChunks, { type: mediaRecorder?.mimeType || 'audio/webm' })
-      await submitAudio(blob)
+      if (!disposed) await submitAudio(blob)
     }
     mediaRecorder.start()
     isRecording.value = true
   } catch (error) {
     voiceError.value = error?.message || '无法打开麦克风，请检查浏览器权限。'
-  }
+  } finally { recordingStarting.value = false }
 }
 
 async function handleAudioUpload(event) {
@@ -424,6 +421,8 @@ function blobToBase64(blob) {
 }
 
 async function submitAudio(blob) {
+  if (disposed || voiceLoading.value || loading.value) return
+  const templateId = selectedTemplateId.value
   voiceLoading.value = true
   voiceError.value = ''
   missingFields.value = []
@@ -432,7 +431,9 @@ async function submitAudio(blob) {
     const response = await fetch('/api/speech/cantonese', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      signal: requestController.signal,
       body: JSON.stringify({
+        templateId,
         audioBase64,
         mimeType: blob.type || 'audio/wav',
         language: voiceLang.value,
@@ -443,9 +444,10 @@ async function submitAudio(blob) {
       throw new Error(payload.error || '粤语识别失败，请稍后重试')
     }
 
+    if (disposed || templateId !== selectedTemplateId.value) return
     voiceText.value = payload.text || ''
     applyExtractedFields(payload.fields || {})
-    missingFields.value = payload.missingFields || []
+    missingFields.value = requiredFields.value.filter(f => !form[f.key]).map(f => f.key)
   } catch (error) {
     voiceError.value = error.message
   } finally {
@@ -455,7 +457,7 @@ async function submitAudio(blob) {
 
 function applyExtractedFields(extractedFields) {
   Object.entries(extractedFields).forEach(([key, value]) => {
-    if (Object.hasOwn(form, key) && String(value || '').trim()) {
+    if (key !== 'receiptConfirmed' && Object.hasOwn(form, key) && String(value || '').trim()) {
       form[key] = String(value).trim()
       errors[key] = ''
     }
@@ -464,12 +466,14 @@ function applyExtractedFields(extractedFields) {
 
 const normalizeLabel = computed(() => {
   if (!contract.value) return ''
-  return contract.value.normalizedBy === 'deepseek' ? '字段已由 DeepSeek 优化' : '字段已按本地规则处理'
+  return contract.value.normalizedBy === 'deepseek' ? '已完成内容检查，按你的填写生成' : '字段已按本地规则处理'
 })
 
-const missingFieldLabels = computed(() => missingFields.value.map((key) => fieldLabelMap[key]).filter(Boolean).join('、'))
+const missingFieldLabels = computed(() => missingFields.value.map((key) => fieldLabelMap.value[key]).filter(Boolean).join('、'))
 
 onBeforeUnmount(() => {
+  disposed = true
+  requestController.abort()
   if (isRecording.value) mediaRecorder?.stop()
   mediaStream?.getTracks().forEach((track) => track.stop())
 })
@@ -961,4 +965,35 @@ onBeforeUnmount(() => {
   .preview-empty { min-height: 460px; }
   .preview-frame iframe { height: 520px; }
 }
+
+/* Template selection uses the existing homepage palette. */
+.catalog-state { padding: 36px; text-align: center; }
+.hero-status h2 { font-family: var(--serif); font-size: 23px; line-height: 1.5; margin: 14px 0 24px; }
+.hero-status strong { font-size: 24px; }
+.scenario-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.scenario-card { position: relative; display: grid; grid-template-columns: 42px minmax(0, 1fr) 20px; gap: 12px; padding: 40px 18px 20px; min-height: 134px; text-align: left; transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.scenario-card:hover:not(:disabled) { transform: translateY(-3px); border-color: var(--green-700); }
+.scenario-card.active { background: #edf7f0; border-color: var(--green-700); box-shadow: inset 0 3px 0 var(--green-700); }
+.scenario-card:focus-visible, button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--green-700); outline-offset: 4px; }
+.scenario-card:disabled { cursor: wait; }
+.template-number { position: absolute; top: 13px; left: 18px; color: var(--ink-soft); font-size: 11px; letter-spacing: 2px; }
+.scenario-card strong { font-size: 16px; line-height: 1.5; }
+.scenario-card small { line-height: 1.5; }
+.selection-check { align-self: center; color: var(--green-700); font-weight: 800; }
+.selection-note { border-top: 1px solid var(--line); padding-top: 16px; margin: 20px 0 0; color: var(--ink-soft); line-height: 1.7; font-size: 14px; }
+.optional-group { grid-column: 1 / -1; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+.optional-group summary { padding: 16px; cursor: pointer; font-size: 14px; font-weight: 700; background: var(--cream); }
+.optional-group summary span { float: right; font-size: 12px; color: var(--ink-soft); font-weight: 400; }
+.optional-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; padding: 18px; }
+.form-note { grid-column: 1 / -1; font-size: 13px; color: var(--ink-soft); line-height: 1.7; margin: 0; }
+.template-source { font-size: 12px; line-height: 1.7; color: var(--ink-soft); }
+.completion-meter { padding: 18px 0; border-top: 1px solid var(--line); margin-bottom: 12px; }
+.completion-meter div { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 10px; }
+.completion-meter progress { width: 100%; height: 7px; accent-color: var(--green-700); }
+.template-change-enter-active, .template-change-leave-active { transition: opacity .15s ease, transform .15s ease; }
+.template-change-enter-from { opacity: 0; transform: translateY(8px); }
+.template-change-leave-to { opacity: 0; transform: translateY(-4px); }
+@media (max-width: 980px) { .scenario-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) { .scenario-grid, .optional-fields { grid-template-columns: 1fr; } .hero-status { padding: 20px; } .scenario-card { min-height: 120px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; } .scenario-card:hover:not(:disabled) { transform: none; } }
 </style>
